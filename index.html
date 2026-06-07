@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Coding with nebulaONE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Official nebulaONE / Cloudforce brand colors */
+  --purple:#784FD3;--purple-light:#A36FC2;--purple-dark:#473B90;--purple-darker:#27097A;
+  --pink:#EE396C;
+  --bg-dark:#161c24;--bg-panel:#212B36;--bg-light:#F9FAFB;
+  --border:#3d4a5c;--border-bright:#4d5f75;
+  --text-light:#EEEEEE;--text-muted:#A8A8A8;--text-dark:#1C2026;
+  --success:#22C55E;--warning:#FFAB00;--error:#FF5630;--info:#00B8D9;
+  --font:-apple-system,BlinkMacSystemFont,"Proxima Nova","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --font-heading:'Barlow',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"Cascadia Code","Fira Code",Consolas,"Courier New",monospace;
+  --radius:10px;--radius-sm:6px;
+  --glow-purple:0 0 0 1px rgba(120,79,211,.35),0 0 18px rgba(120,79,211,.12);
+  --glow-pink:0 0 0 1px rgba(238,57,108,.35),0 0 18px rgba(238,57,108,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);line-height:1.7;color:var(--text-dark);background:var(--bg-light)}
+
+/* ── Hero ── */
+.hero{
+  background:var(--bg-dark);
+  color:#fff;
+  padding:64px 40px 88px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(120,79,211,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(120,79,211,.06) 1px,transparent 1px);
+  background-size:40px 40px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 0%,#000 60%,transparent 100%);
+}
+.hero-glow{
+  position:absolute;top:-100px;left:50%;transform:translateX(-50%);
+  width:700px;height:400px;
+  background:radial-gradient(ellipse at 50% 30%,rgba(120,79,211,.3) 0%,rgba(238,57,108,.1) 50%,transparent 70%);
+  pointer-events:none;
+}
+.hero>*{position:relative;z-index:1}
+.hero .brand{margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:12px}
+.hero-logo{height:32px;width:auto}
+.hero-logo-fallback{font-family:var(--font-heading);font-size:18px;font-weight:700;color:rgba(255,255,255,.9)}
+.brand-sep{color:var(--pink)}
+.hero h1{
+  font-family:var(--font-heading);
+  font-size:52px;font-weight:800;
+  margin-bottom:16px;letter-spacing:-1px;
+  line-height:1.1;
+}
+.hero h1 .line2{
+  display:block;
+  background:linear-gradient(90deg,var(--purple-light),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero p{font-size:17px;max-width:520px;margin:0 auto 28px;color:rgba(255,255,255,.65);line-height:1.75}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  padding:6px 16px;border-radius:100px;font-size:12px;color:rgba(255,255,255,.5);
+  letter-spacing:.3px;
+}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);flex-shrink:0}
+.hero-wave{position:absolute;bottom:-2px;left:0;right:0;height:60px}
+.hero-wave svg{display:block;width:100%;height:100%}
+
+/* ── PAT Bar ── */
+.pat-bar{
+  background:rgba(33,43,54,.97);
+  backdrop-filter:blur(12px);
+  padding:10px 24px;
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+  position:sticky;top:0;z-index:100;
+  border-bottom:2px solid var(--purple);
+  box-shadow:0 2px 16px rgba(0,0,0,.4);
+}
+.pat-bar-left{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.pat-bar-logo{height:22px;width:auto;display:block}
+.pat-divider{width:1px;height:24px;background:var(--border);margin:0 2px}
+.pat-bar .field-group{display:flex;align-items:center;gap:10px}
+.pat-bar label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);display:none}
+.pat-bar input{
+  background:var(--bg-dark);
+  border:1px solid var(--border);
+  color:var(--text-light);
+  padding:7px 12px;border-radius:var(--radius-sm);
+  font-size:12px;font-family:var(--mono);width:300px;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.pat-bar input:focus{border-color:var(--purple);box-shadow:var(--glow-purple)}
+.pat-bar input::placeholder{color:rgba(168,168,168,.4)}
+.btn{
+  padding:8px 18px;border-radius:var(--radius-sm);border:none;
+  font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font);
+  transition:all .18s;
+}
+.btn-purple{background:var(--purple);color:#fff;box-shadow:0 2px 8px rgba(120,79,211,.25)}
+.btn-purple:hover{background:var(--purple-dark);box-shadow:0 4px 14px rgba(120,79,211,.4);transform:translateY(-1px)}
+.btn-purple:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-pink{background:var(--pink);color:#fff;box-shadow:0 2px 8px rgba(238,57,108,.25)}
+.btn-pink:hover{background:#d6305e;box-shadow:0 4px 14px rgba(238,57,108,.4);transform:translateY(-1px)}
+.status{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text-muted);margin-left:auto;font-family:var(--mono)}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--text-muted);flex-shrink:0;transition:background .3s,box-shadow .3s}
+.status-dot.connected{background:var(--success);box-shadow:0 0 8px var(--success)}
+.status-dot.error{background:var(--error);box-shadow:0 0 8px var(--error)}
+
+/* ── Nav ── */
+nav.main-nav{
+  background:var(--bg-light);
+  border-bottom:1px solid #E2E8F0;
+  padding:0 40px;
+  display:flex;gap:2px;flex-wrap:wrap;justify-content:center;
+  position:sticky;top:50px;z-index:99;
+  box-shadow:0 1px 0 rgba(0,0,0,.04);
+}
+nav.main-nav a{
+  color:var(--text-muted);text-decoration:none;
+  font-size:12px;font-weight:600;letter-spacing:.3px;
+  padding:10px 12px;
+  border-bottom:2px solid transparent;
+  transition:color .15s,border-color .15s;
+  text-transform:uppercase;letter-spacing:.8px;
+  white-space:nowrap;
+}
+nav.main-nav a:hover{color:var(--purple);border-bottom-color:rgba(120,79,211,.3)}
+
+/* ── Sections ── */
+.section{max-width:920px;margin:0 auto;padding:56px 40px}
+.section-header{margin-bottom:32px}
+.section h2{
+  font-family:var(--font-heading);font-size:28px;font-weight:700;
+  color:var(--purple-darker);letter-spacing:-.3px;
+  display:flex;align-items:center;gap:10px;margin-bottom:6px;
+}
+.section h2 .num{
+  color:var(--pink);font-size:14px;font-weight:700;
+  background:rgba(238,57,108,.08);border:1px solid rgba(238,57,108,.2);
+  padding:2px 9px;border-radius:100px;letter-spacing:.3px;
+  flex-shrink:0;
+}
+.section .sub{color:var(--text-muted);font-size:15px;margin-top:2px;margin-bottom:28px}
+.section h3{font-size:16px;font-weight:600;margin:28px 0 10px;color:var(--purple-dark)}
+.section p{margin-bottom:14px;color:var(--text-dark)}
+.dark{background:var(--bg-dark);color:var(--text-light);padding:56px 40px;position:relative}
+.dark::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(rgba(120,79,211,.04) 1px,transparent 1px);
+  background-size:20px 20px;pointer-events:none;
+}
+.dark .inner{max-width:920px;margin:0 auto;position:relative}
+.dark h2{color:var(--text-light)}.dark h3{color:var(--purple-light)}.dark .sub{color:var(--text-muted)}
+.dark a{color:var(--info);text-decoration:none}
+.dark a:hover{text-decoration:underline}
+.dark p{color:rgba(238,238,238,.75)}
+
+/* ── Steps ── */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin:24px 0}
+.step{
+  text-align:center;padding:24px 16px 20px;
+  background:#fff;
+  border-radius:var(--radius);
+  border:1px solid #E8EDF5;
+  position:relative;
+  transition:border-color .2s,box-shadow .2s;
+}
+.step:hover{border-color:rgba(120,79,211,.3);box-shadow:0 4px 20px rgba(120,79,211,.08)}
+.step .n{
+  width:34px;height:34px;
+  background:linear-gradient(135deg,var(--purple),var(--purple-dark));
+  color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;font-family:var(--mono);
+  margin:0 auto 12px;
+  box-shadow:0 4px 12px rgba(120,79,211,.35);
+}
+.step h4{margin-bottom:4px;font-size:13px;font-weight:700;color:var(--text-dark);letter-spacing:-.1px}
+.step p{font-size:12px;color:var(--text-muted);margin:0;line-height:1.5}
+
+/* ── Alerts ── */
+.alert{
+  padding:12px 16px;border-radius:var(--radius-sm);
+  margin:16px 0;font-size:13px;
+  border-left:3px solid;
+  display:flex;align-items:flex-start;gap:10px;
+  line-height:1.6;
+}
+.alert::before{font-size:14px;flex-shrink:0;margin-top:1px}
+.alert-info{background:#EFF9FF;border-color:var(--info);color:#0D5C75}.alert-info::before{content:'ℹ'}
+.alert-warn{background:#FFFBEB;border-color:var(--warning);color:#7A4E00}.alert-warn::before{content:'⚠'}
+.alert-ok{background:#EDFAF3;border-color:var(--success);color:#0F5E30}.alert-ok::before{content:'✓'}
+.alert-tip{background:#F5F0FF;border-color:var(--purple);color:var(--purple-darker)}.alert-tip::before{content:'✦'}
+.dark .alert-info{background:rgba(41,182,246,.08);color:#5DCCF8;border-color:var(--info)}
+.dark .alert-warn{background:rgba(245,166,35,.08);color:#F5C06A;border-color:var(--warning)}
+.dark .alert-warn strong{color:#FFCA7A}
+
+/* ── Cards (Ideas) ── */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;margin:24px 0}
+.card{
+  background:var(--bg-panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;color:var(--text-light);
+  transition:border-color .2s,box-shadow .2s,transform .2s;
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--purple),var(--pink));
+  opacity:0;transition:opacity .2s;
+}
+.card:hover{border-color:rgba(120,79,211,.45);box-shadow:0 8px 32px rgba(0,0,0,.3);transform:translateY(-2px)}
+.card:hover::before{opacity:1}
+.card h4{font-size:14px;font-weight:700;margin-bottom:6px;color:#fff;letter-spacing:-.2px}
+.card p{font-size:13px;color:var(--text-muted);margin-bottom:12px;flex:1;line-height:1.6}
+.card .agents-used{
+  font-size:11px;color:var(--info);margin-bottom:14px;
+  font-family:var(--mono);
+  background:rgba(41,182,246,.08);border:1px solid rgba(41,182,246,.15);
+  padding:4px 8px;border-radius:4px;display:inline-block;
+}
+.card .btn{font-size:12px;padding:7px 14px;align-self:flex-start}
+
+/* ── Hidden ── */
+.hidden{display:none}
+
+/* ── Freeform Idea ── */
+.idea-input{
+  width:100%;background:#fff;
+  border:1px solid #E2E8F0;
+  color:var(--text-dark);
+  padding:16px;border-radius:var(--radius);
+  font-size:14px;font-family:var(--font);
+  resize:vertical;outline:none;min-height:88px;
+  transition:border-color .2s,box-shadow .2s;
+  line-height:1.7;
+}
+.idea-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(120,79,211,.12)}
+.idea-input::placeholder{color:#9CA3AF}
+.idea-result{
+  background:var(--bg-dark);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px;margin-top:16px;
+  color:var(--text-light);
+}
+.idea-result h4{font-size:16px;font-weight:700;margin-bottom:10px;letter-spacing:-.2px}
+.idea-result .agent-list{margin:12px 0}
+.idea-result .agent-item{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 10px;font-size:13px;
+  border-radius:var(--radius-sm);
+  transition:background .15s;
+}
+.idea-result .agent-item:hover{background:rgba(255,255,255,.03)}
+.idea-result .agent-item code{
+  font-family:var(--mono);font-size:10px;color:var(--info);
+  background:rgba(41,182,246,.1);border:1px solid rgba(41,182,246,.15);
+  padding:2px 8px;border-radius:4px;
+}
+.idea-result .pipeline-desc{font-size:13px;color:var(--text-muted);margin:12px 0;line-height:1.7;padding:12px;background:rgba(255,255,255,.03);border-radius:var(--radius-sm)}
+.idea-result .new-agent-box{
+  background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.25);
+  border-radius:var(--radius);padding:16px;margin:14px 0;
+}
+.idea-result .new-agent-box h5{color:var(--warning);font-size:14px;margin-bottom:8px;font-weight:700}
+.idea-result .new-agent-box p,.idea-result .new-agent-box li{font-size:12px;color:var(--text-muted);line-height:1.7}
+.idea-result .new-agent-box ol{margin-left:20px}
+.prompt-preview{
+  background:rgba(14,17,23,.8);
+  border:1px solid rgba(120,79,211,.35);
+  border-left:3px solid var(--purple);
+  border-radius:var(--radius-sm);
+  padding:16px;max-height:200px;overflow-y:auto;
+  font-family:var(--mono);font-size:11px;line-height:1.7;
+  white-space:pre-wrap;word-wrap:break-word;
+  color:#e2e8f0;margin:14px 0;
+}
+.copy-row{display:flex;gap:10px;align-items:center}
+.copy-feedback{font-size:12px;color:var(--success);font-weight:600;opacity:0;transition:opacity .3s;font-family:var(--mono)}
+.copy-feedback.show{opacity:1}
+.spinner{
+  display:inline-block;width:15px;height:15px;
+  border:2px solid rgba(255,255,255,.15);
+  border-top-color:var(--pink);
+  border-radius:50%;animation:spin .7s linear infinite;
+  vertical-align:middle;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Explore/Chat ── */
+.explore-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.explore-controls select{
+  background:var(--bg-panel);border:1px solid var(--border);
+  color:var(--text-light);padding:8px 14px;
+  border-radius:var(--radius-sm);font-size:13px;font-family:var(--font);
+  min-width:260px;outline:none;
+  transition:border-color .2s;cursor:pointer;
+}
+.explore-controls select:focus{border-color:var(--purple)}
+.chat-area{
+  background:var(--bg-panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  min-height:300px;max-height:500px;overflow-y:auto;
+  padding:20px;display:flex;flex-direction:column;gap:12px;
+}
+.msg{
+  max-width:82%;padding:11px 15px;
+  border-radius:12px;font-size:13px;line-height:1.65;
+  white-space:pre-wrap;word-wrap:break-word;
+}
+.msg.user{
+  align-self:flex-end;
+  background:var(--purple);
+  color:#fff;border-bottom-right-radius:3px;
+}
+.msg.agent{
+  align-self:flex-start;
+  background:var(--bg-panel);
+  border:1px solid var(--border);
+  border-bottom-left-radius:3px;
+  color:var(--text-light);
+}
+.msg.agent .aname{
+  font-size:10px;font-weight:600;color:var(--pink);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;
+  font-family:var(--mono);
+}
+.msg.sys{align-self:center;color:var(--text-muted);font-size:11px;font-style:italic;padding:4px 10px;background:rgba(255,255,255,.03);border-radius:100px;border:1px solid var(--border)}
+.msg.err{align-self:center;background:rgba(255,71,87,.07);border:1px solid rgba(255,71,87,.25);color:var(--error);font-size:12px;border-radius:var(--radius-sm);padding:8px 14px}
+.msg.warn{align-self:center;background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.2);color:var(--warning);font-size:12px;border-radius:var(--radius-sm);padding:8px 14px}
+.typing span{
+  width:5px;height:5px;background:var(--text-muted);border-radius:50%;
+  display:inline-block;
+  animation:bounce 1.4s infinite ease-in-out both;margin-right:3px;
+}
+.typing span:nth-child(1){animation-delay:-.32s}.typing span:nth-child(2){animation-delay:-.16s}
+
+/* ── Chat Input ── */
+.chat-input{display:flex;gap:8px;margin-top:10px}
+.chat-input textarea{
+  flex:1;background:var(--bg-panel);
+  border:1px solid var(--border);
+  color:var(--text-light);
+  padding:9px 14px;border-radius:var(--radius-sm);
+  font-size:13px;font-family:var(--font);
+  resize:none;outline:none;min-height:40px;max-height:100px;
+  transition:border-color .2s;
+}
+.chat-input textarea:focus{border-color:var(--purple)}
+.chat-input button{
+  background:var(--pink);
+  color:#fff;width:40px;height:40px;border-radius:var(--radius-sm);
+  border:none;cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s;
+  flex-shrink:0;
+}
+.chat-input button:hover{background:#d6305e;transform:translateY(-1px)}
+.chat-input button:disabled{opacity:.3;cursor:not-allowed;transform:none}
+
+/* ── Tables ── */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid #E8EDF5}
+th{
+  background:#F8FAFD;font-weight:700;font-size:10px;
+  text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);
+  border-bottom:2px solid #E2E8F2;
+}
+.dark th{background:rgba(255,255,255,.04);border-bottom-color:var(--border)}
+.dark td{border-color:var(--border);color:rgba(232,237,243,.8)}
+.dark tr:hover td{background:rgba(255,255,255,.02)}
+pre{
+  background:var(--bg-dark);color:#e2e8f0;
+  padding:18px 20px;border-radius:var(--radius);
+  overflow-x:auto;font-family:var(--mono);font-size:12px;
+  line-height:1.7;margin:14px 0;
+  border:1px solid var(--border);
+}
+code{font-family:var(--mono);font-size:12px}
+:not(pre)>code{
+  background:#EEF2FF;padding:2px 6px;
+  border-radius:4px;color:var(--purple-dark);
+  border:1px solid rgba(120,79,211,.12);font-size:11px;
+}
+.dark :not(pre)>code{background:rgba(41,182,246,.1);color:#5BC8F5;border-color:rgba(41,182,246,.2)}
+
+/* ── Copy buttons (inline) ── */
+.copy-inline{display:inline-flex;align-items:center;gap:4px;background:rgba(120,79,211,.15);border:1px solid rgba(120,79,211,.25);color:var(--purple-light);padding:2px 8px;border-radius:4px;font-size:11px;cursor:pointer;font-family:var(--mono);transition:all .15s;user-select:none}
+.copy-inline:hover{background:rgba(120,79,211,.3);color:#fff}
+.msg .copy-msg{position:absolute;top:6px;right:8px;opacity:0;transition:opacity .15s;background:rgba(120,79,211,.8);color:#fff;border:none;padding:3px 8px;border-radius:4px;font-size:10px;cursor:pointer;font-family:var(--font)}
+.msg:hover .copy-msg{opacity:1}
+.msg{position:relative}
+.pipeline-stage .copy-stage{position:absolute;top:10px;right:10px;opacity:0;transition:opacity .15s;background:rgba(120,79,211,.8);color:#fff;border:none;padding:3px 8px;border-radius:4px;font-size:10px;cursor:pointer;font-family:var(--font)}
+.pipeline-stage:hover .copy-stage{opacity:1}
+
+/* ── Next Steps (post-copy) ── */
+.next-steps{margin-top:14px;padding:14px 16px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:var(--radius-sm);font-size:13px;color:var(--text-muted);line-height:1.8}
+.next-steps strong{color:var(--success);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.next-steps ol{margin:8px 0 8px 20px}
+.next-steps a{color:var(--info)}
+.next-steps code{font-size:11px}
+.next-steps p{margin:8px 0 0;font-size:12px;font-style:italic;color:rgba(168,168,168,.7)}
+.post-copy{margin-top:10px}
+
+/* ── Pipeline Test ── */
+.pipeline-test{margin-top:18px;border-top:1px solid var(--border);padding-top:18px}
+.pipeline-test h5{font-size:14px;color:var(--text-light);margin-bottom:8px;font-weight:700}
+.pipeline-test .sample-input{width:100%;background:rgba(14,17,23,.6);border:1px solid var(--border);color:var(--text-light);padding:10px 12px;border-radius:var(--radius-sm);font-size:13px;font-family:var(--font);resize:vertical;outline:none;min-height:60px;margin-bottom:10px}
+.pipeline-test .sample-input:focus{border-color:var(--purple)}
+.pipeline-stages{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.pipeline-stage{background:rgba(14,17,23,.5);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;position:relative;overflow:hidden}
+.pipeline-stage::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--border);transition:background .3s}
+.pipeline-stage.running::before{background:linear-gradient(90deg,var(--purple),var(--pink),var(--purple));background-size:200% 100%;animation:shimmer 1.5s infinite}
+.pipeline-stage.done::before{background:var(--success)}
+.pipeline-stage.error::before{background:var(--error)}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.pipeline-stage .stage-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px}
+.pipeline-stage .stage-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.pipeline-stage.done .stage-num{background:var(--success)}
+.pipeline-stage.error .stage-num{background:var(--error)}
+.pipeline-stage .stage-name{font-weight:600;color:var(--text-light)}
+.pipeline-stage .stage-status{margin-left:auto;font-size:11px;color:var(--text-muted);font-family:var(--mono)}
+.pipeline-stage .stage-output{font-size:13px;color:rgba(226,232,240,.8);line-height:1.6;white-space:pre-wrap;word-wrap:break-word;max-height:200px;overflow-y:auto;margin-top:6px}
+.pipeline-stage .stage-output:empty{display:none}
+
+/* ── Footer ── */
+.footer{
+  background:var(--bg-dark);
+  color:var(--text-muted);
+  padding:24px 40px;text-align:center;
+  font-size:12px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+}
+.footer svg{display:block;flex-shrink:0}
+.footer-neb-logo{height:18px;width:auto;opacity:.9}
+.footer-logo{font-family:var(--font-heading);font-weight:800;color:#fff;font-size:13px}
+.footer-logo span{color:var(--pink)}
+.footer-sep{color:var(--border)}
+
+/* ── Section divider ── */
+.section-divider{
+  height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);
+  margin:0;border:none;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:rgba(120,79,211,.5)}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="brand">
+    <svg class="hero-logo" viewBox="0 0 268 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M1.535 36.5C-2.742 43.156 2.5 52.574 10.096 52.574H37.226L26.384 36.456C19.758 26.602 7.18 27.725 1.535 36.5Z" fill="url(#hg1)"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M27.303 10.91C24.892 7.341 20.234 7.489 17.982 10.989L1.54 36.49C4.224 32.519 8.519 30.119 13.67 30.119C18.821 30.119 23.354 32.723 26.043 36.683L40.516 58.275C41.293 59.433 42.62 60 44.01 60H53.195C56.208 60 57.95 56.636 56.316 54.106L27.944 11.857L28.114 12.107C27.842 11.71 27.575 11.307 27.303 10.91Z" fill="#3D52A2"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M78.725 23.504C83.003 16.849 77.761 7.432 70.165 7.432H43.035L53.877 23.549C60.503 33.404 73.081 32.28 78.725 23.504Z" fill="url(#hg2)"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M52.958 49.09C55.369 52.659 60.027 52.511 62.279 49.011L78.72 23.51C76.036 27.481 71.742 29.881 66.591 29.881C61.439 29.881 56.906 27.277 54.217 23.317L43.569 7.426L39.745 1.725C38.968 .567 37.64 0 36.25 0H27.065C24.053 0 22.311 3.364 23.945 5.894L24.972 7.426L52.317 48.137L52.146 47.888C52.419 48.285 52.685 48.688 52.958 49.085V49.09Z" fill="#00A3DF"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M106.489 36.094V26.296C106.489 23.03 106.16 21.448 105.173 20.031C103.982 18.315 102.009 17.391 99.463 17.391C97.388 17.391 95.931 18.018 94.318 19.568V17.822H90.261V36.102H94.647V27.494C94.647 25.051 94.811 24.001 95.375 23.109C96.064 22.02 97.223 21.425 98.61 21.425C100.787 21.425 102.103 22.286 102.103 27.166V36.11H106.489V36.094Z" fill="#fff"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M127.235 27.22C127.235 21.55 123.241 17.391 117.798 17.391C112.355 17.391 108.165 21.644 108.165 27.025C108.165 32.405 112.488 36.525 118.064 36.525C121.761 36.525 125.552 34.449 126.773 30.682H121.988C120.868 31.998 119.779 32.499 117.962 32.499C115.354 32.499 113.443 31.113 112.919 28.904H127.071C127.204 28.278 127.235 27.878 127.235 27.22ZM122.912 25.043H112.785C113.475 22.701 115.26 21.417 117.868 21.417C120.476 21.417 122.356 22.701 122.912 25.043Z" fill="#fff"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M148.249 26.821C148.249 21.315 144.293 17.156 139.046 17.156C136.673 17.156 135.052 17.814 133.376 19.498V11.713H128.99V36.094H133.015V33.752C134.895 35.765 136.642 36.525 139.352 36.525C144.497 36.525 148.256 32.335 148.256 26.829L148.249 26.821ZM143.824 26.86C143.824 30.189 141.646 32.499 138.514 32.499C135.381 32.499 133.102 30.157 133.102 26.821C133.102 23.484 135.342 21.182 138.412 21.182C141.482 21.182 143.824 23.594 143.824 26.86Z" fill="#fff"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M165.925 36.094V17.814H161.539V26.421C161.539 28.865 161.344 29.985 160.85 30.807C160.192 31.865 159.002 32.491 157.522 32.491C155.407 32.491 154.06 31.598 154.06 26.75V17.806H149.674V27.604C149.674 34.034 152.376 36.509 156.637 36.509C158.845 36.509 160.232 35.945 161.884 34.332V36.078H165.941L165.925 36.094Z" fill="#fff"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M172.747 36.094V11.713H168.361V36.094H172.747Z" fill="#fff"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M193.69 36.094V17.814H189.664V20.258C188.145 18.245 186.336 17.391 183.696 17.391C178.284 17.391 174.392 21.448 174.392 27.025C174.392 32.601 178.253 36.525 183.594 36.525C186.171 36.525 187.918 35.702 189.664 33.721V36.094H193.69ZM189.539 27.087C189.539 30.126 187.557 32.499 184.229 32.499C180.9 32.499 178.817 30.322 178.817 27.119C178.817 23.915 181.025 21.409 184.158 21.409C187.291 21.409 189.539 23.751 189.539 27.087Z" fill="#fff"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M198.733 23.327C198.733 17.422 203.519 12.636 209.424 12.636C215.329 12.636 220.115 17.422 220.115 23.327C220.115 29.232 215.329 34.018 209.424 34.018C203.519 34.018 198.733 29.232 198.733 23.327ZM244.073 32.647V10.146H241.582V29.812L226.999 13.192L224.508 10.357V36.516H226.999V16.967L241.582 33.587L244.073 36.422V32.647ZM250.017 12.636H261.929V10.146H247.526V36.516H261.929V34.025H250.017V24.58H261.929V22.089H250.017V12.644V12.636ZM222.613 23.327C222.613 16.059 216.731 10.161 209.463 10.138H209.432C202.148 10.138 196.243 16.043 196.243 23.327C196.243 30.611 202.148 36.516 209.432 36.516C216.715 36.516 222.621 30.611 222.621 23.327H222.613Z" fill="#fff"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M135.758 46.549C135.758 44.638 134.293 43.165 132.375 43.165C131.286 43.165 130.393 43.612 129.853 44.419V43.314H128.983V51.992H129.853V48.632C130.417 49.455 131.286 49.885 132.351 49.885C134.262 49.885 135.758 48.421 135.758 46.541V46.549Z" fill="rgba(255,255,255,.5)"/>
+      <defs>
+        <linearGradient id="hg1" x1="21.732" y1="41.789" x2="11.736" y2="52.733" gradientUnits="userSpaceOnUse"><stop stop-color="#493578"/><stop offset="1" stop-color="#634B9C"/></linearGradient>
+        <linearGradient id="hg2" x1="68.548" y1="8.09" x2="58.835" y2="17.768" gradientUnits="userSpaceOnUse"><stop stop-color="#3ABEEA"/><stop offset="1" stop-color="#005BA3"/></linearGradient>
+      </defs>
+    </svg>
+  </div>
+  <h1>Vibe Coding <span class="line2">Workshop</span></h1>
+  <p>Describe what you want. AI writes the code. Ship something real in under an hour.</p>
+  <div class="hero-badge"><span class="dot"></span>Powered by nebulaONE AI Orchestration</div>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z" fill="#F9FAFB"/>
+    </svg>
+  </div>
+</div>
+
+<!-- Sticky PAT Bar -->
+<div class="pat-bar">
+  <div class="pat-bar-left">
+    <svg class="pat-bar-logo" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M1.535 36.5C-2.742 43.156 2.5 52.574 10.096 52.574H37.226L26.384 36.456C19.758 26.602 7.18 27.725 1.535 36.5Z" fill="url(#pg1)"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M27.303 10.91C24.892 7.341 20.234 7.489 17.982 10.989L1.54 36.49C4.224 32.519 8.519 30.119 13.67 30.119C18.821 30.119 23.354 32.723 26.043 36.683L40.516 58.275C41.293 59.433 42.62 60 44.01 60H53.195C56.208 60 57.95 56.636 56.316 54.106L27.944 11.857L28.114 12.107C27.842 11.71 27.575 11.307 27.303 10.91Z" fill="#3D52A2"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M78.725 23.504C83.003 16.849 77.761 7.432 70.165 7.432H43.035L53.877 23.549C60.503 33.404 73.081 32.28 78.725 23.504Z" fill="url(#pg2)"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M52.958 49.09C55.369 52.659 60.027 52.511 62.279 49.011L78.72 23.51C76.036 27.481 71.742 29.881 66.591 29.881C61.439 29.881 56.906 27.277 54.217 23.317L43.569 7.426L39.745 1.725C38.968.567 37.64 0 36.25 0H27.065C24.053 0 22.311 3.364 23.945 5.894L24.972 7.426L52.317 48.137L52.146 47.888C52.419 48.285 52.685 48.688 52.958 49.085V49.09Z" fill="#00A3DF"/>
+      <defs><linearGradient id="pg1" x1="21.732" y1="41.789" x2="11.736" y2="52.733" gradientUnits="userSpaceOnUse"><stop stop-color="#493578"/><stop offset="1" stop-color="#634B9C"/></linearGradient><linearGradient id="pg2" x1="68.548" y1="8.09" x2="58.835" y2="17.768" gradientUnits="userSpaceOnUse"><stop stop-color="#3ABEEA"/><stop offset="1" stop-color="#005BA3"/></linearGradient></defs>
+    </svg>
+    <div class="pat-divider"></div>
+  </div>
+  <input type="password" id="patIn" placeholder="Paste your n1pat_ token here..." autocomplete="off" style="flex:1;min-width:200px;max-width:400px" onkeydown="if(event.key==='Enter'){event.preventDefault();verify()}">
+  <button class="btn btn-purple" id="verifyBtn" onclick="verify()">Verify Token</button>
+  <button class="btn btn-purple" id="refreshBtn" onclick="refreshAgents()" style="display:none;background:var(--info);font-size:12px;padding:7px 14px">Refresh Agents</button>
+  <div class="status"><div class="status-dot" id="dot"></div><span id="statusTxt">Not connected</span></div>
+</div>
+
+<!-- NAV -->
+<nav class="main-nav">
+  <a href="#how">How It Works</a>
+  <a href="#setup">Setup</a>
+  <a href="#explore">Explore Agents</a>
+  <a href="#ideas">Project Ideas</a>
+  <a href="#own">Your Own Idea</a>
+  <a href="#ref">API Ref</a>
+  <a href="#help">Help</a>
+</nav>
+
+<!-- HOW IT WORKS -->
+<div class="section" id="how">
+  <div class="section-header">
+    <h2>How This Workshop Works</h2>
+    <p class="sub">You describe what you want in plain English. AI writes the code. You run it.</p>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><h4>Get Your Token</h4><p>Generate a PAT from nebulaONE</p></div>
+    <div class="step"><div class="n">2</div><h4>Explore Agents</h4><p>Browse and chat with your AI agents</p></div>
+    <div class="step"><div class="n">3</div><h4>Pick an Idea</h4><p>Choose a suggested project or describe your own</p></div>
+    <div class="step"><div class="n">4</div><h4>Copy & Go</h4><p>Paste prompt in <a href="https://claude.ai" target="_blank" style="color:var(--purple)">Claude.ai</a> — it builds your app</p></div>
+  </div>
+  <div class="alert alert-info"><strong>No coding needed.</strong> You'll use plain English. Claude writes the code. You just save the file and open it.</div>
+</div>
+
+<!-- SETUP -->
+<div class="dark" id="setup"><div class="inner">
+  <div class="section-header">
+    <h2><span class="num">01</span> Get Your Token</h2>
+    <p class="sub">Takes about 60 seconds.</p>
+  </div>
+  <ol style="margin-left:20px;line-height:2.4;color:var(--text-light)">
+    <li>Go to <a href="https://cf.nebulaone.ai" target="_blank"><strong>cf.nebulaone.ai</strong></a> and sign in</li>
+    <li>Click your <strong>profile icon</strong> (bottom-left)</li>
+    <li>Click <strong>"Settings"</strong></li>
+    <li>Select <strong>"Access Tokens"</strong> from the settings menu</li>
+    <li>Click <strong>"New Token"</strong></li>
+    <li>Name it (e.g. "Workshop") and click <strong>Generate</strong></li>
+    <li><strong>Copy immediately</strong> — you won't see it again</li>
+  </ol>
+  <div class="alert alert-warn" style="background:rgba(255,171,0,.1);border-color:var(--warning);color:var(--warning)"><strong>Save your token!</strong> Starts with <code>n1pat_</code>. Paste it in the bar at the top of this page.</div>
+</div></div>
+
+<!-- PASTE PROMPT (visible until verified, then hidden) -->
+<div class="section" id="pastePrompt" style="text-align:center;padding:40px">
+  <div style="background:linear-gradient(135deg,var(--purple-darker),var(--purple-dark));border-radius:var(--radius);padding:36px 32px;color:#fff;max-width:600px;margin:0 auto;box-shadow:0 8px 32px rgba(120,79,211,.25)">
+    <h3 style="font-size:22px;font-weight:700;margin-bottom:8px;color:#fff">Ready? Paste your token above.</h3>
+    <p style="font-size:14px;color:rgba(255,255,255,.65);margin-bottom:16px">Paste your <code style="background:rgba(255,255,255,.15);border:none;color:#fff">n1pat_...</code> token in the bar at the top of this page and click <strong>Verify Token</strong>.</p>
+    <p style="font-size:13px;color:rgba(255,255,255,.45);margin:0">We'll load your agents and generate personalized project ideas for you.</p>
+    <div style="margin-top:18px;padding:10px 16px;background:rgba(255,171,0,.12);border:1px solid rgba(255,171,0,.3);border-radius:6px;font-size:12px;color:rgba(255,200,120,.9);text-align:left">
+      <strong>Not working?</strong> If nothing happens when you click Verify, your browser may be blocking the connection. Open a terminal in this file's folder and run <code style="background:rgba(255,255,255,.15);border:none;color:#fff;font-size:11px">python -m http.server 8080</code>, then open <code style="background:rgba(255,255,255,.15);border:none;color:#fff;font-size:11px">http://localhost:8080/vibe-coding-workshop.html</code>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE AGENTS (hidden until verified) -->
+<div class="section hidden" id="explore">
+  <div class="section-header">
+    <h2><span class="num">02</span> Explore Your Agents</h2>
+    <p class="sub">Chat with any agent to see what it can do. Try a few before deciding what to build.</p>
+  </div>
+  <div class="explore-controls">
+    <div style="position:relative;flex:1;max-width:350px">
+      <input type="text" id="agentSearch" placeholder="Search agents..." oninput="filterAgents()" onfocus="document.getElementById('agentDropdown').style.display='block'" style="width:100%;background:var(--bg-panel);border:1px solid var(--border);color:var(--text-light);padding:8px 14px;border-radius:var(--radius-sm);font-size:13px;font-family:var(--font);outline:none">
+      <div id="agentDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:250px;overflow-y:auto;background:var(--bg-panel);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.4)"></div>
+    </div>
+    <input type="hidden" id="agentSelect">
+    <button class="btn btn-purple" onclick="startChat()">Start Chat</button>
+    <button class="btn btn-purple" id="newChatBtn" onclick="newChat()" style="display:none;background:#3d4a5c">New Chat</button>
+  </div>
+  <div class="chat-area" id="chatArea"></div>
+  <div class="chat-input hidden" id="chatInput">
+    <textarea id="msgIn" placeholder="Type a message..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"></textarea>
+    <button id="sendBtn" onclick="sendMsg()" disabled>&#9654;</button>
+  </div>
+</div>
+
+<!-- YOUR IDEAS (hidden until verified) -->
+<div class="dark hidden" id="ideas"><div class="inner">
+  <div class="section-header">
+    <h2><span class="num">03</span> Project Ideas — Personalized for You</h2>
+    <p class="sub">Based on the <span id="agentCountText">0</span> agents your token has access to. Click any idea to copy a ready-to-use prompt.</p>
+  </div>
+  <div class="cards" id="ideaCards"></div>
+</div></div>
+
+<!-- DESCRIBE YOUR OWN (hidden until verified) -->
+<div class="section hidden" id="own">
+  <div class="section-header">
+    <h2><span class="num">04</span> Have Your Own Idea?</h2>
+    <p class="sub">Describe what you want to build. We'll find the right agents — or help you create a new one.</p>
+  </div>
+  <textarea class="idea-input" id="ideaInput" placeholder="Example: I want a tool that helps me prepare for client meetings by summarizing past notes and generating talking points..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitIdea()}"></textarea>
+  <div style="margin-top:12px;display:flex;gap:10px;align-items:center">
+    <button class="btn btn-pink" id="ideaBtn" onclick="submitIdea()">Get AI Suggestions</button>
+    <span id="ideaSpinner" class="hidden"><span class="spinner"></span> Analyzing your agents...</span>
+  </div>
+  <div id="ideaResult" class="hidden"></div>
+</div>
+
+<!-- API REF -->
+<div class="section" id="ref">
+  <div class="section-header">
+    <h2><span class="num">05</span> API Reference <a href="#" onclick="event.preventDefault();document.getElementById('apiDetails').classList.toggle('hidden');this.textContent=document.getElementById('apiDetails').classList.contains('hidden')?'(show)':'(hide)'" style="font-size:12px;color:var(--info);font-weight:400;font-family:var(--font);margin-left:8px">(show)</a></h2>
+    <p class="sub">For the curious. The generated prompts handle all of this for you.</p>
+  </div>
+  <div id="apiDetails" class="hidden">
+  <table>
+    <tr><th>Method</th><th>Path</th><th>Purpose</th></tr>
+    <tr><td><code>POST</code></td><td><code>/api/internal/authorization/UserAccessToken/GenerateToken</code></td><td>Exchange PAT → 30-min bearer</td></tr>
+    <tr><td><code>GET</code></td><td><code>/api/internal/gpts/common/management/AvailableForConversation</code></td><td>List agents you can actually use</td></tr>
+    <tr><td><code>POST</code></td><td><code>/api/internal/userConversations/byGptSystemId/{id}</code></td><td>New conversation</td></tr>
+    <tr><td><code>POST</code></td><td><code>/api/internal/userConversations/{convId}/segments</code></td><td>Follow-up message</td></tr>
+  </table>
+  <div class="alert alert-warn"><strong>SSE Quirk:</strong> Event name and data are separated by a blank line. Parsers must keep event name across blank lines.</div>
+  </div>
+</div>
+
+<!-- TROUBLESHOOTING -->
+<div class="dark" id="help"><div class="inner">
+  <div class="section-header">
+    <h2><span class="num">06</span> Troubleshooting</h2>
+    <p class="sub">Common issues and what to tell Claude to fix them.</p>
+  </div>
+  <table>
+    <tr><th style="width:35%">Problem</th><th>Solution</th></tr>
+    <tr><td>"Token exchange failed (401)"</td><td>PAT expired or revoked. Generate a new one.</td></tr>
+    <tr><td>"No response received"</td><td>SSE parsing issue. Tell Claude: <em>"The API sends event and data on separate lines with a blank line between. Don't reset event name on blank lines."</em></td></tr>
+    <tr><td>"connection-oauth-expired"</td><td>Agent needs browser OAuth. Try a different agent.</td></tr>
+    <tr><td>CORS error</td><td>Serve locally: <code>python -m http.server 8080</code></td></tr>
+    <tr><td>Garbled characters</td><td>Tell Claude: <em>"Use TextDecoder for base64, not raw atob(). Data is UTF-8."</em></td></tr>
+    <tr><td>Claude's code doesn't work</td><td>Normal! Paste the error back and say "fix this." That's vibe coding.</td></tr>
+  </table>
+</div></div>
+
+<div class="footer">
+  <svg style="height:18px;width:auto;opacity:.9" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M1.535 36.5C-2.742 43.156 2.5 52.574 10.096 52.574H37.226L26.384 36.456C19.758 26.602 7.18 27.725 1.535 36.5Z" fill="url(#fg1)"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M27.303 10.91C24.892 7.341 20.234 7.489 17.982 10.989L1.54 36.49C4.224 32.519 8.519 30.119 13.67 30.119C18.821 30.119 23.354 32.723 26.043 36.683L40.516 58.275C41.293 59.433 42.62 60 44.01 60H53.195C56.208 60 57.95 56.636 56.316 54.106L27.944 11.857L28.114 12.107C27.842 11.71 27.575 11.307 27.303 10.91Z" fill="#3D52A2"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M78.725 23.504C83.003 16.849 77.761 7.432 70.165 7.432H43.035L53.877 23.549C60.503 33.404 73.081 32.28 78.725 23.504Z" fill="url(#fg2)"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M52.958 49.09C55.369 52.659 60.027 52.511 62.279 49.011L78.72 23.51C76.036 27.481 71.742 29.881 66.591 29.881C61.439 29.881 56.906 27.277 54.217 23.317L43.569 7.426L39.745 1.725C38.968.567 37.64 0 36.25 0H27.065C24.053 0 22.311 3.364 23.945 5.894L24.972 7.426L52.317 48.137L52.146 47.888C52.419 48.285 52.685 48.688 52.958 49.085V49.09Z" fill="#00A3DF"/>
+    <defs><linearGradient id="fg1" x1="21.732" y1="41.789" x2="11.736" y2="52.733" gradientUnits="userSpaceOnUse"><stop stop-color="#493578"/><stop offset="1" stop-color="#634B9C"/></linearGradient><linearGradient id="fg2" x1="68.548" y1="8.09" x2="58.835" y2="17.768" gradientUnits="userSpaceOnUse"><stop stop-color="#3ABEEA"/><stop offset="1" stop-color="#005BA3"/></linearGradient></defs>
+  </svg>
+  <span style="color:rgba(255,255,255,.6);font-weight:600;font-family:var(--font-heading)">nebulaONE</span>
+  <span class="footer-sep">·</span>
+  <span>Vibe Coding Workshop</span>
+  <span class="footer-sep">·</span>
+  <span style="color:rgba(255,255,255,.4);font-weight:500">cloudforce</span>
+</div>
+
+<script>
+const API = 'https://cf.nebulaone.ai';
+let pat='',bearer='',bexpiry=0,agents=[],convId='',curAgent='',curName='',sending=false;
+
+// ── Utils ──
+function decodeB64(b){const s=atob(b),u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return new TextDecoder('utf-8').decode(u)}
+function setStatus(cls,txt){document.getElementById('dot').className='status-dot '+cls;document.getElementById('statusTxt').textContent=txt}
+function show(id){document.getElementById(id).classList.remove('hidden')}
+function hide(id){document.getElementById(id).classList.add('hidden')}
+
+// ── Token ──
+async function exchangeToken(){
+  const r=await fetch(`${API}/api/internal/authorization/UserAccessToken/GenerateToken`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userAccessToken:pat})});
+  if(!r.ok)throw new Error(`Token failed (${r.status})`);
+  bearer=(await r.json()).n1AIToken;bexpiry=Date.now()+25*60*1000;
+}
+async function ensureToken(){if(!bearer||Date.now()>bexpiry)await exchangeToken()}
+
+// ── Fetch Agents (only agents you can actually use) ──
+// Known OAuth-dependent agents that don't work via API — filtered at load time
+const OAUTH_AGENT_IDS=new Set([
+  'c77c265a-8e00-46cc-bf72-58a8d5b1a060', // CNA - Master Agent
+  '9166cb5b-7b9f-4157-829e-c5db6049da31', // DKR - Copilot M365
+  'edf2577b-caa8-435f-a39c-c8223d148be4', // Daily Briefing Agent
+  '1e96624f-d140-42ac-9771-0e87296eebf1', // Demo SharePoint Agent
+  'e5f0210d-a7f1-452c-838c-b70dbf0ebef2', // Hospital Workforce Agent [Fabric]
+  'cabb603f-a790-47d9-81a8-3663fb3acb8d', // MS365 Test - SW
+  'e59c3aba-c252-4949-9ff8-d6b881c0dfeb', // PVT Territory Manager
+  '42593734-034b-4c39-858f-3440d7959cc6', // Product Marketing Agent
+  'da50212c-9a71-409d-8b3b-bda7c872941c', // Timesheet Agent
+  'd430dc47-2fa3-4037-9fac-a49ae98e2d98', // test
+]);
+
+async function fetchAgents(){
+  const h={'Authorization':`Bearer ${bearer}`,'Accept':'application/json'};
+
+  // Fetch system agents + personal agents in parallel
+  const [sysResp, personalResp] = await Promise.allSettled([
+    fetch(`${API}/api/internal/gpts/common/management/AvailableForConversation`,{headers:h}),
+    fetch(`${API}/api/internal/gpts/personal/management`,{headers:h})
+  ]);
+
+  const all=[];
+
+  // System agents from AvailableForConversation
+  if(sysResp.status==='fulfilled'&&sysResp.value.ok){
+    const d=await sysResp.value.json();
+    for(const it of(d.items||d||[])){
+      all.push({id:it.gptSystemId||it.id,name:(it.name||'').trim(),desc:(it.description||'').trim(),type:'system'});
+    }
+  }
+
+  // Personal agents from management endpoint
+  if(personalResp.status==='fulfilled'&&personalResp.value.ok){
+    const d=await personalResp.value.json();
+    for(const it of(d.items||d||[])){
+      const id=it.gptSystemId||it.id;
+      if(!all.some(a=>a.id===id)){
+        all.push({id,name:(it.gptSystemName||it.name||'').trim(),desc:(it.description||'').trim(),type:'personal'});
+      }
+    }
+  }
+
+  const filtered=all.filter(a=>!OAUTH_AGENT_IDS.has(a.id));
+  if(all.length!==filtered.length)console.log(`Filtered ${all.length-filtered.length} OAuth-dependent agents`);
+  return filtered.sort((a,b)=>a.name.localeCompare(b.name));
+}
+
+// ── Verify ──
+async function verify(){
+  pat=document.getElementById('patIn').value.trim();
+  if(!pat){alert('Enter your PAT first');return}
+  const btn=document.getElementById('verifyBtn');
+  btn.disabled=true;btn.textContent='Verifying...';setStatus('','Verifying...');
+  try{
+    await exchangeToken();
+    btn.textContent='Loading agents...';
+    agents=await fetchAgents();
+    setStatus('connected',`${agents.length} agents loaded`);
+    btn.textContent='Verified';btn.style.background='#22C55E';
+    document.getElementById('agentCountText').textContent=agents.length;
+    document.getElementById('refreshBtn').style.display='';
+    populateDropdown();generateIdeas();
+    show('explore');show('ideas');show('own');
+    hide('pastePrompt');
+    setTimeout(()=>document.getElementById('explore').scrollIntoView({behavior:'smooth',block:'start'}),300);
+  }catch(e){
+    setStatus('error','Failed');btn.disabled=false;btn.textContent='Verify Token';
+    const isCors=e.message.includes('Failed to fetch')||e.message.includes('NetworkError')||e.message.includes('TypeError');
+    if(isCors&&location.protocol==='file:'){
+      alert('Connection blocked by browser security (CORS).\n\nYou need to serve this file locally:\n1. Open a terminal/command prompt\n2. Navigate to the folder containing this file\n3. Run: python -m http.server 8080\n4. Open http://localhost:8080/vibe-coding-workshop.html\n\nThen try pasting your token again.');
+    }else{
+      alert('Verification failed: '+e.message+'\n\nCheck that your PAT starts with n1pat_ and hasn\'t expired.');
+    }
+  }
+}
+
+// ── Refresh Agents ──
+async function refreshAgents(){
+  const btn=document.getElementById('refreshBtn');
+  btn.disabled=true;btn.textContent='Refreshing...';
+  setStatus('','Refreshing agents...');
+  try{
+    await ensureToken();
+    const prevCount=agents.length;
+    agents=await fetchAgents();
+    populateDropdown();generateIdeas();
+    document.getElementById('agentCountText').textContent=agents.length;
+    const diff=agents.length-prevCount;
+    const msg=diff>0?`${agents.length} agents (${diff} new!)`:`${agents.length} agents`;
+    setStatus('connected',msg);
+    btn.textContent='Refresh Agents';btn.disabled=false;
+    if(diff>0){
+      document.getElementById('ideas').scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  }catch(e){
+    setStatus('error','Refresh failed');
+    btn.textContent='Refresh Agents';btn.disabled=false;
+  }
+}
+
+// ── Populate Explore Dropdown (searchable) ──
+function populateDropdown(){
+  window._agentList=agents;
+  renderAgentDropdown(agents);
+}
+
+function renderAgentDropdown(list){
+  const dd=document.getElementById('agentDropdown');
+  if(!list.length){dd.innerHTML='<div style="padding:10px 14px;font-size:12px;color:var(--text-muted)">No agents match your search</div>';return}
+  dd.innerHTML=list.map(a=>{
+    const badge=a.type==='personal'?'<span style="font-size:9px;background:var(--pink);color:#fff;padding:1px 6px;border-radius:99px;margin-left:6px;vertical-align:middle">MY AGENT</span>':'';
+    return `<div class="agent-option" onclick="selectAgent('${a.id}','${escHtml(a.name).replace(/'/g,"\\'")}')" style="padding:8px 14px;font-size:13px;cursor:pointer;border-bottom:1px solid rgba(61,74,92,.3);color:var(--text-light);transition:background .1s" onmouseover="this.style.background='rgba(120,79,211,.15)'" onmouseout="this.style.background=''">${escHtml(a.name)}${badge}</div>`;
+  }).join('');
+}
+
+function filterAgents(){
+  const q=document.getElementById('agentSearch').value.toLowerCase();
+  const filtered=q?window._agentList.filter(a=>a.name.toLowerCase().includes(q)):window._agentList;
+  renderAgentDropdown(filtered);
+  document.getElementById('agentDropdown').style.display='block';
+}
+
+function selectAgent(id,name){
+  document.getElementById('agentSelect').value=id;
+  document.getElementById('agentSearch').value=name;
+  document.getElementById('agentDropdown').style.display='none';
+  curAgent=id;curName=name;
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.explore-controls'))document.getElementById('agentDropdown')&&(document.getElementById('agentDropdown').style.display='none');
+});
+
+// ── Personalized Ideas (rule-based) ──
+function find(pattern){return agents.find(a=>a.name.toLowerCase().includes(pattern.toLowerCase()))}
+function findAll(pattern){return agents.filter(a=>a.name.toLowerCase().includes(pattern.toLowerCase()))}
+
+function generateIdeas(){
+  const cards=document.getElementById('ideaCards');cards.innerHTML='';
+  const ideas=[];
+  // Find available agents by name pattern
+  const redPen=find('red pen'), general=find('mistral')||find('deepseek v3')||find('taras default'),
+        meetingNotes=find('meeting notes'), timesheet=find('timesheet note enhancer')||find('timesheet agent'),
+        pmpStudy=find('pmp study'), interview=find('interview assistant'), okr=find('okr'),
+        sysprompt=find('system prompt'), clickup=find('clickup'),
+        sales=findAll('frontier').concat(findAll('oppscout'),findAll('scout:')),
+        pmAssistant=find('pm assistant');
+
+  if(redPen&&general)ideas.push({title:'The Lazy Email',desc:'Paste rough notes → get a professional email → auto-remove AI language. Two agents, three columns, one click.',agents:[general,redPen],
+    prompt:`Build me a webpage with a text area for rough email notes. "Draft Email" sends to ${general.name} (ID: ${general.id}) with "Turn these rough notes into a professional email. Keep it concise and friendly." Then "Polish It" sends the draft to The Red Pen (ID: ${redPen.id}) with "Rewrite this to remove any AI-sounding language. Make it sound like a normal person wrote it quickly." Show original, draft, and final in three columns with a Copy button.`});
+
+  if(meetingNotes&&redPen&&general)ideas.push({title:'Meeting Notes Pipeline',desc:'Paste a transcript → structured notes → action items → polished output. Three agents in sequence.',agents:[meetingNotes,general,redPen],
+    prompt:`Build a meeting notes pipeline. I paste a transcript and click "Process". Step 1: send to Meeting Notes (ID: ${meetingNotes.id}) with "Format into structured internal meeting notes with sections for discussion, decisions, and action items." Step 2: send result to ${general.name} (ID: ${general.id}) with "Extract all action items. For each, list the owner, task, and deadline." Step 3: send to The Red Pen (ID: ${redPen.id}) with "Rewrite to sound natural and human." Show each stage with progress indicators and a Copy All button.`});
+
+  if(timesheet)ideas.push({title:'Daily Timesheet Helper',desc:'Paste rough timesheet notes → get clean, professional entries back. Saves 15 min/day.',agents:[timesheet],
+    prompt:`Build a timesheet helper. Text area for rough notes, a "Clean Up" button that sends to ${timesheet.name} (ID: ${timesheet.id}) with "Enhance these timesheet entries to be professional and clear." Show before/after side by side with a Copy button.`});
+
+  if(pmpStudy)ideas.push({title:'PMP Quiz App',desc:'Practice questions with scoring. Click "Next Question" to get a new one, answer, see if you\'re right. Tracks your streak.',agents:[pmpStudy],
+    prompt:`Build a PMP quiz app. A "Next Question" button sends "Give me a PMP practice question with 4 choices, mark the correct answer" to PMP Study Mode (ID: ${pmpStudy.id}). Display the question and 4 clickable answer buttons. When clicked, show if correct/wrong and update the score counter. Track streak. Make it fun with colors for right/wrong.`});
+
+  if(interview)ideas.push({title:'Interview Prep Tool',desc:'Enter a job title → get tailored interview questions with sample answers.',agents:[interview,redPen].filter(Boolean),
+    prompt:`Build an interview prep tool. Input field for job title. "Generate Questions" sends to Interview Assistant (ID: ${interview.id}) with "Generate 5 interview questions for [title] with sample answers."${redPen?` Then "Polish Answers" sends the answers to The Red Pen (ID: ${redPen.id}) to make them sound natural.`:''} Show questions and answers in a clean list.`});
+
+  if(okr)ideas.push({title:'OKR Writing Assistant',desc:'Describe a goal → get properly formatted OKRs with measurable key results.',agents:[okr],
+    prompt:`Build an OKR helper. Text area to describe a goal. "Write OKR" sends to OKR Agent (ID: ${okr.id}) with "Write a properly formatted OKR with 3-5 measurable key results." Show result with a Copy button.`});
+
+  if(sales.length>0){const agent=sales[0];
+    ideas.push({title:'Sales Prep Dashboard',desc:'Enter a prospect name → get intel, talking points, and suggested approach.',agents:[agent],
+    prompt:`Build a sales prep tool. Input for prospect/company name. "Research" sends to ${agent.name} (ID: ${agent.id}) with "Give me key intel, talking points, and suggested approach for [name]." Show results in organized sections.`})}
+
+  if(sysprompt)ideas.push({title:'Agent Builder',desc:'Describe what you want an agent to do → get a ready-to-use system prompt you can paste into nebulaONE.',agents:[sysprompt],
+    prompt:`Build an agent creator tool. Text area to describe desired agent behavior. "Generate Prompt" sends to System Prompt Generator (ID: ${sysprompt.id}) with "Create a system prompt for an agent that does [description]." Show the generated prompt with a Copy button and instructions for creating a personal agent in nebulaONE.`});
+
+  if(pmAssistant)ideas.push({title:'Project Kickoff Generator',desc:'Describe a project → get a structured kickoff document with timeline, risks, and stakeholder map.',agents:[pmAssistant],
+    prompt:`Build a project kickoff tool. Text area for project description. "Generate Kickoff" sends to PM Assistant (ID: ${pmAssistant.id}) with "Create a project kickoff document with sections for: objectives, scope, timeline, key risks, stakeholder map, and success criteria." Show the result with a Copy button.`});
+
+  // Always add wild card
+  ideas.push({title:'Chain Any Two Agents',desc:'Pick any two agents from your list and wire them together. Agent A\'s output becomes Agent B\'s input.',agents:[],
+    prompt:`Build a two-agent pipeline tool. Two dropdowns to select agents (populate from the AvailableForConversation API). A text input, a "Run Pipeline" button. Sends input to Agent 1, takes the response, sends it to Agent 2, shows both outputs.`});
+
+  for(const idea of ideas){
+    const card=document.createElement('div');card.className='card';
+    const agentNames=idea.agents.map(a=>a.name).join(' → ')||'Your choice';
+    card.innerHTML=`<h4>${idea.title}</h4><p>${idea.desc}</p><div class="agents-used">${agentNames}</div><button class="btn btn-pink" onclick="copyIdeaPrompt(this, ${ideas.indexOf(idea)})">Copy & Go to Claude</button><div class="post-copy hidden" id="postCopy${ideas.indexOf(idea)}"></div>`;
+    card.dataset.prompt=idea.prompt;
+    cards.appendChild(card);
+  }
+  // Store for copy
+  window._ideas=ideas;
+}
+
+function copyIdeaPrompt(btn, idx){
+  const idea=window._ideas[idx];
+  const full=buildFullPrompt(idea.prompt,idea.agents);
+  navigator.clipboard.writeText(full).then(()=>{
+    btn.textContent='Copied!';btn.style.background='#22C55E';
+    setTimeout(()=>{btn.textContent='Copy & Go to Claude';btn.style.background=''},4000);
+    // Show next steps
+    const pc=document.getElementById('postCopy'+idx);
+    if(pc){pc.classList.remove('hidden');pc.innerHTML=NEXT_STEPS_HTML;}
+  });
+}
+
+const NEXT_STEPS_HTML=`<div class="next-steps">
+  <strong>What to do now:</strong>
+  <ol>
+    <li>Open <a href="https://claude.ai" target="_blank">claude.ai</a> and start a new chat</li>
+    <li><strong>Paste</strong> what you just copied (Ctrl+V / Cmd+V)</li>
+    <li>Claude will generate your app as an artifact — wait for it to finish</li>
+    <li>Click the <strong>download icon</strong> on the artifact to save it as an HTML file</li>
+    <li><strong>Open</strong> the downloaded file in your browser</li>
+    <li>Paste your <code>n1pat_</code> token when the app asks for it</li>
+  </ol>
+  <p>If something doesn't work, paste the error back into Claude and say "fix this." That's vibe coding!</p>
+</div>`;
+
+// ── Claude Prompt Builder ──
+function buildFullPrompt(description, agentList){
+  const agentSection=agentList.length>0?'\n## Agents to use\n'+agentList.map(a=>`- "${a.name}" — ID: ${a.id}`).join('\n')+'\n':'';
+  return `You are helping me build a self-contained HTML app that talks to nebulaONE AI agents via their API. Single .html file, all CSS/JS inline, no external dependencies.
+
+## nebulaONE API
+Base URL: https://cf.nebulaone.ai
+
+### Authentication
+POST /api/internal/authorization/UserAccessToken/GenerateToken
+Body: {"userAccessToken": "n1pat_..."}
+Response: {"n1AIToken": "eyJ..."} (30-min bearer token)
+Handle invisibly — user pastes PAT once, auto-refresh 5 min before expiry.
+
+### Listing Available Agents
+GET /api/internal/gpts/common/management/AvailableForConversation
+Headers: Authorization: Bearer {token}
+Response: {"items": [{"gptSystemId": "uuid", "name": "Agent Name", "description": "..."}, ...]}
+This returns ONLY agents the user can actually chat with — use this instead of the directory endpoints.
+
+### Sending a Message
+POST /api/internal/userConversations/byGptSystemId/{gptSystemId}
+Headers: Authorization: Bearer {token}, Content-Type: application/json, Accept: text/event-stream
+Body: {"question": "message", "session": {"sessionIdentifier": "unique-string"}}
+
+### Follow-up in existing conversation
+POST /api/internal/userConversations/{conversationId}/segments (same body)
+
+### Response: Server-Sent Events (SSE)
+CRITICAL: event name and data are on SEPARATE lines with a BLANK LINE between:
+  event: response-updated\\n\\ndata: base64chunk\\n\\n
+Parser MUST keep event name across blank lines. Do NOT reset on empty lines.
+
+Base64 UTF-8 decoder (NOT raw atob):
+function decodeBase64Utf8(base64) {
+  const bin = atob(base64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder('utf-8').decode(bytes);
+}
+
+SSE events: response-updated (text chunk), conversation-and-segment-id (JSON with ConversationId), step-update (progress), response-model (metadata), no-more-data (done), connection-oauth-expired (warning), bad-request/forbidden/unauthorized (errors), keep-alive (ignore).
+
+### Error Handling
+IMPORTANT: Some agents may return "forbidden: You no longer have access to this Agent" even though they appear in the directory. This is normal — not all agents support PAT-based access. Your app should catch this error gracefully and show a user-friendly message like "This agent isn't available via API. Try selecting a different one." Never let the app crash on agent errors.
+
+Stream reading pattern:
+let eventName = '';
+per line: if starts with 'event: ' → eventName = rest; if starts with 'data: ' && eventName → process(eventName, data); eventName = '';
+Do NOT reset eventName on blank lines.
+${agentSection}
+## Design
+Dark theme: bg #161c24, panels #212B36, text #EEEEEE. Purple #784FD3, pink #EE396C.
+
+## Build this:
+${description}`;
+}
+
+// ── Smart Agent Matching (AI-powered) ──
+// Find a general-purpose agent to use as the AI matcher
+function getMatcherAgentId(){
+  const m=find('mistral')||find('deepseek v3')||find('taras default');
+  return m?m.id:null;
+}
+
+// ── Quick Agent Validation (abort-early, 5s timeout) ──
+async function quickTestAgent(agentId){
+  try{
+    await ensureToken();
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),5000);
+    const r=await fetch(`${API}/api/internal/userConversations/byGptSystemId/${agentId}`,{
+      method:'POST',signal:controller.signal,
+      headers:{'Authorization':`Bearer ${bearer}`,'Content-Type':'application/json','Accept':'text/event-stream'},
+      body:JSON.stringify({question:'.', session:{sessionIdentifier:`chk-${Date.now()}`}})
+    });
+    if(!r.ok){clearTimeout(timeout);return 'blocked'}
+    const reader=r.body.getReader();
+    const dec=new TextDecoder();
+    let buf='',hasOAuth=false;
+    _sseEv='';
+    while(true){
+      const{done,value}=await reader.read();
+      if(done)break;
+      buf+=dec.decode(value,{stream:true});
+      for(const ev of parseSSE(buf)){
+        if(ev.event==='connection-oauth-expired')hasOAuth=true;
+        if(ev.event==='forbidden'||ev.event==='bad-request'){clearTimeout(timeout);try{reader.cancel()}catch{};return 'blocked'}
+        // Any real SSE event (response-updated, conversation-and-segment-id, step-update) = agent works
+        if(ev.event==='response-updated'||ev.event==='conversation-and-segment-id'){
+          clearTimeout(timeout);try{reader.cancel()}catch{};
+          return hasOAuth?'oauth':'ok';
+        }
+      }
+    }
+    clearTimeout(timeout);
+    return hasOAuth?'oauth':'ok';
+  }catch(e){
+    // Timeout = agent is slow but responding (not blocked). Count as OK.
+    if(e.name==='AbortError')return 'ok';
+    return 'error';
+  }
+}
+
+async function submitIdea(){
+  const desc=document.getElementById('ideaInput').value.trim();
+  if(!desc){alert('Describe what you want to build');return}
+  document.getElementById('ideaBtn').disabled=true;
+  document.getElementById('ideaSpinner').innerHTML='<span class="spinner"></span> Analyzing your agents...';
+  show('ideaSpinner');hide('ideaResult');
+  try{
+    await ensureToken();
+    const agentListStr=agents.slice(0,80).map(a=>`- ${a.name} (ID: ${a.id})${a.desc?' — '+a.desc.slice(0,120):''}`).join('\n');
+    const prompt=`You are an agent matching assistant. Match a user's idea to EXISTING agents from the list below.
+
+RULES:
+1. ONLY recommend an agent if its description DIRECTLY relates to the user's idea. "Tangentially related" is NOT a match.
+2. An agent that "could theoretically help" is NOT a match. The agent's PRIMARY PURPOSE must align with the idea.
+3. If you would need more than one sentence to explain WHY an agent fits, it's NOT a good match — skip it.
+4. It is BETTER to return needsNewAgent=true with 0 matched agents than to recommend bad matches.
+5. Generic utility agents (document formatters, story builders, data helpers) are NOT matches unless the user specifically asks for that utility.
+
+WRONG matches (do NOT do this):
+- User wants "food finder" → recommending "ClearDay" (schedule planner) is WRONG
+- User wants "crypto tracker" → recommending "DAX UDF Helper" (data queries) is WRONG
+- User wants "diary app" → recommending "FitForce AI" (fitness) is WRONG
+
+CORRECT matches:
+- User wants "meeting notes cleanup" → "Meeting Notes" agent is CORRECT
+- User wants "PMP exam prep" → "PMP Study Mode" agent is CORRECT
+- User wants "rewrite AI text" → "The Red Pen" agent is CORRECT
+
+Available agents:
+
+${agentListStr}
+
+User wants to build: "${desc}"
+
+Respond with ONLY valid JSON, no markdown:
+{"matchedAgents":[{"name":"Name","id":"full-id","role":"what it does"}],"pipelineDescription":"how they work together or why none fit","claudePrompt":"description for Claude","needsNewAgent":false,"newAgentSetup":null}
+
+If needsNewAgent is true, include newAgentSetup with ALL of these fields:
+{"suggestedName":"Name","shortDescription":"one-line description","suggestedPrompt":"detailed system prompt","capabilities":["Search the Internet"],"searchResultCount":5,"knowledgeSources":[{"type":"website","url":"https://example.com","maxPages":10,"whenToUse":"when to use this"}],"welcomeMessage":"Hi! I help you with...","chatStarters":["Example prompt 1","Example prompt 2"],"steps":["step 1","step 2"]}
+
+PERSONAL AGENT CONFIGURATION (these are the actual fields in the nebulaONE UI):
+- "suggestedName": Short, memorable name for the agent
+- "shortDescription": One-line description of what the agent does
+- "suggestedPrompt": DETAILED system prompt (3-5 sentences minimum). Goes into the "Agent Instructions > Specific" tab. Tell the agent exactly what to do, what tone to use, and what format to respond in.
+- "capabilities": Only option is "Search the Internet". Enable it if the idea needs real-time data (restaurants, news, prices, weather, current events, reviews). Set to ["Search the Internet"] or [].
+- "knowledgeSources": Recommend knowledge sources if relevant. Two types available:
+  - {"type":"website","url":"https://example.com","maxPages":10,"whenToUse":"description of when the agent should reference this site"} — for grounding the agent in specific websites. maxPages is 1-9999.
+  - {"type":"files","description":"what files to upload (e.g. company handbook, product catalog, reference guide)","whenToUse":"when the agent should use these files"} — for uploading reference documents. Max 20 files, supports PDF, Word, Excel, text, code files.
+  Only include if specific sources would genuinely improve the agent. Not every agent needs knowledge sources.
+- "searchResultCount": Number of internet search results to return (default 5, min 1). Only include if capabilities includes "Search the Internet". Higher = more thorough but slower.
+- "welcomeMessage": A friendly intro message shown when the user first opens the agent. 1-2 sentences.
+- "chatStarters": Array of 2-3 example prompts the user can click to start a conversation (e.g. "Find dinner spots near me under $30", "Plan a date night in downtown DC").
+- "steps": Step-by-step instructions for creating the agent in nebulaONE.`;
+    const matcherId=getMatcherAgentId();
+    if(!matcherId)throw new Error('No general-purpose agent available for matching. Try picking from the suggestions above instead.');
+    const raw=await callAgent(matcherId,prompt);
+    let parsed;
+    // Extract JSON from response (may be wrapped in ```json ... ```)
+    const jsonMatch=raw.match(/\{[\s\S]*\}/);
+    if(!jsonMatch)throw new Error('Could not find JSON in agent response. Try rephrasing your idea');
+    // Clean control characters inside JSON string values (newlines, tabs etc.)
+    const block=jsonMatch[0];
+    let clean='',inStr=false,i=0;
+    while(i<block.length){
+      const c=block[i];
+      if(inStr&&c==='\\'&&i+1<block.length){clean+=c+block[i+1];i+=2;continue}
+      if(c==='"'){inStr=!inStr;clean+=c;i++;continue}
+      if(inStr&&c.charCodeAt(0)<32){clean+=' ';i++;continue}
+      clean+=c;i++;
+    }
+    try{parsed=JSON.parse(clean)}catch(e){throw new Error('Could not parse agent response. Try rephrasing your idea')}
+
+    // Pre-validate recommended agents before displaying
+    if(parsed.matchedAgents&&parsed.matchedAgents.length>0){
+      const spinnerEl=document.getElementById('ideaSpinner');
+      const validated=[];
+      const filtered=[];
+      for(let idx=0;idx<parsed.matchedAgents.length;idx++){
+        const a=parsed.matchedAgents[idx];
+        spinnerEl.innerHTML=`<span class="spinner"></span> Checking ${a.name} (${idx+1}/${parsed.matchedAgents.length})...`;
+        const status=await quickTestAgent(a.id);
+        if(status==='ok'){validated.push(a)}
+        else{filtered.push({...a,reason:status})}
+      }
+      parsed.matchedAgents=validated;
+      parsed._filteredAgents=filtered;
+      if(validated.length===0&&!parsed.needsNewAgent){
+        parsed.needsNewAgent=true;
+        parsed.newAgentSetup=parsed.newAgentSetup||{suggestedName:'Custom Agent',suggestedPrompt:'A custom agent for: '+desc,suggestedModel:'GPT-4.1',steps:['Go to cf.nebulaone.ai → Profile → Personal Agents → Create','Configure with the suggested prompt','Save and return here']};
+      }
+    }
+
+    displayIdeaResult(desc,parsed);
+  }catch(e){
+    const el=document.getElementById('ideaResult');
+    el.innerHTML=`<div class="idea-result"><h4 style="color:var(--error)">Something went wrong</h4><p style="color:var(--text-muted)">${e.message}. Try rephrasing your idea or pick from the suggestions above.</p></div>`;
+    show('ideaResult');
+  }finally{
+    document.getElementById('ideaBtn').disabled=false;hide('ideaSpinner');
+  }
+}
+
+function displayIdeaResult(userDesc,data){
+  const el=document.getElementById('ideaResult');
+  let html='<div class="idea-result">';
+
+  // Show filtered agents notice (compact)
+  if(data._filteredAgents&&data._filteredAgents.length>0){
+    const names=data._filteredAgents.map(a=>`<strong>${escHtml(a.name)}</strong>`).join(', ');
+    html+=`<div style="padding:10px 14px;background:rgba(255,171,0,.08);border:1px solid rgba(255,171,0,.2);border-radius:var(--radius-sm);margin-bottom:14px;font-size:12px;color:var(--warning)">`;
+    html+=`${names} removed (requires browser auth). Showing only API-compatible agents.</div>`;
+  }
+
+  if(data.matchedAgents&&data.matchedAgents.length>0){
+    window._matchedPipeline=data.matchedAgents;
+    const agentsForPrompt=data.matchedAgents.map(a=>({id:a.id,name:a.name}));
+    const fullPrompt=buildFullPrompt(data.claudePrompt,agentsForPrompt);
+
+    // Clean, simple view: agent names + what they do + big CTA
+    html+=`<h4 style="color:var(--success);margin-bottom:14px">Here's how to build it</h4>`;
+    html+=`<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">`;
+    for(let i=0;i<data.matchedAgents.length;i++){
+      const a=data.matchedAgents[i];
+      html+=`<div style="display:flex;align-items:center;gap:6px">`;
+      html+=`<span style="background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">${i+1}</span>`;
+      html+=`<span style="font-size:13px"><strong>${escHtml(a.name)}</strong> <span style="color:var(--text-muted)">— ${escHtml(a.role).slice(0,60)}</span></span>`;
+      html+=`</div>`;
+      if(i<data.matchedAgents.length-1)html+=`<span style="color:var(--pink);font-weight:700;font-size:16px;display:flex;align-items:center">→</span>`;
+    }
+    html+=`</div>`;
+
+    html+=`<div style="font-size:13px;color:var(--text-muted);margin-bottom:18px;line-height:1.6">${escHtml(data.pipelineDescription)}</div>`;
+
+    // Big CTA
+    html+=`<div style="margin-bottom:10px"><button class="btn btn-pink" style="font-size:14px;padding:10px 24px" onclick="copyIdeaFreeform()">Copy & Go to Claude</button> <span class="copy-feedback" id="ideaCopyFb">Copied!</span></div>`;
+    html+=`<div id="ideaPostCopy" class="hidden"></div>`;
+
+    // Collapsible details
+    html+=`<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px">`;
+    html+=`<a href="#" onclick="event.preventDefault();document.getElementById('ideaDetails').classList.toggle('hidden');this.textContent=document.getElementById('ideaDetails').classList.contains('hidden')?'Show details (prompt, agent IDs, preview)':'Hide details'" style="font-size:12px;color:var(--info)">Show details (prompt, agent IDs, preview)</a>`;
+    html+=`<div id="ideaDetails" class="hidden" style="margin-top:12px">`;
+
+    // Agent IDs
+    html+=`<div style="margin-bottom:12px"><div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;font-weight:600">Agent IDs</div>`;
+    for(const a of data.matchedAgents){
+      html+=`<div style="font-size:12px;margin-bottom:4px">${escHtml(a.name)}: <code style="cursor:pointer" onclick="copyText('${a.id}',this)" title="Click to copy">${a.id}</code></div>`;
+    }
+    html+=`</div>`;
+
+    // Prompt preview
+    html+=`<div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;font-weight:600">Full prompt</div>`;
+    html+=`<div class="prompt-preview" id="ideaPromptPrev">${escHtml(fullPrompt)}</div>`;
+
+    // Try it out
+    const sampleInput=escHtml(userDesc);
+    html+=`<div style="margin-top:16px">`;
+    html+=`<div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;font-weight:600">Try it out</div>`;
+    html+=`<p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">See how these agents respond in sequence before you build. Edit the input or run as-is.</p>`;
+    html+=`<textarea id="pipelineInput" style="width:100%;display:block;background:rgba(14,17,23,.6);border:1px solid var(--border);color:var(--text-light);padding:12px;border-radius:var(--radius-sm);font-size:13px;font-family:var(--font);resize:vertical;outline:none;min-height:60px;line-height:1.6;margin-bottom:8px;box-sizing:border-box" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();testPipeline()}">${sampleInput}</textarea>`;
+    html+=`<button class="btn btn-purple" id="testPipelineBtn" onclick="testPipeline()">Try it out</button>`;
+    html+=`<div class="pipeline-stages" id="pipelineStages"></div>`;
+    html+=`</div>`;
+
+    html+=`</div></div>`; // close ideaDetails + border wrapper
+  }
+
+  if(data.needsNewAgent&&data.newAgentSetup){
+    const ns=data.newAgentSetup;
+    html+=`<div class="new-agent-box"><h5>Create a personal agent: ${escHtml(ns.suggestedName||'Custom Agent')}</h5>`;
+    html+=`<p>No existing agents are a strong fit. Create one in nebulaONE:</p><ol>`;
+    html+=`<li>Go to <a href="https://cf.nebulaone.ai" target="_blank" style="color:var(--info)">cf.nebulaone.ai</a> → Settings → Personal Agents → Create</li>`;
+    html+=`<li>Name: <strong>${escHtml(ns.suggestedName||'Custom Agent')}</strong></li>`;
+    if(ns.shortDescription){
+      html+=`<li>Short Description: <strong>${escHtml(ns.shortDescription)}</strong></li>`;
+    }
+    if(ns.capabilities&&ns.capabilities.length){
+      html+=`<li>Capabilities — toggle on <strong>${ns.capabilities.map(c=>escHtml(c)).join(', ')}</strong>`;
+      if(ns.searchResultCount&&ns.capabilities.includes('Search the Internet')){
+        html+=`<br><span style="font-size:11px;color:var(--text-muted)">Set search result count to <strong>${ns.searchResultCount}</strong></span>`;
+      }
+      html+=`</li>`;
+    }
+    if(ns.knowledgeSources&&ns.knowledgeSources.length){
+      html+=`<li>Knowledge Sources — click <strong>"Add"</strong>:`;
+      html+=`<ul style="margin:6px 0 6px 0;list-style:none;padding:0">`;
+      for(const ks of ns.knowledgeSources){
+        if(ks.type==='website'){
+          html+=`<li style="margin-bottom:10px;padding:10px 12px;background:rgba(14,17,23,.4);border-radius:var(--radius-sm);border:1px solid var(--border)">`;
+          html+=`<strong style="font-size:12px">Add → Website</strong>`;
+          html+=`<div style="margin-top:6px;font-size:12px;display:grid;grid-template-columns:auto 1fr;gap:4px 10px">`;
+          html+=`<span style="color:var(--text-muted)">URL:</span><code style="cursor:pointer;font-size:11px" onclick="copyText('${escHtml(ks.url||'')}',this)" title="Click to copy">${escHtml(ks.url||'')}</code>`;
+          if(ks.maxPages){html+=`<span style="color:var(--text-muted)">Max pages:</span><span>${ks.maxPages}</span>`}
+          html+=`<span style="color:var(--text-muted)">When to use:</span><span>${escHtml(ks.whenToUse||'')}</span>`;
+          html+=`</div></li>`;
+        }else if(ks.type==='files'){
+          html+=`<li style="margin-bottom:10px;padding:10px 12px;background:rgba(14,17,23,.4);border-radius:var(--radius-sm);border:1px solid var(--border)">`;
+          html+=`<strong style="font-size:12px">Add → Upload Files</strong>`;
+          html+=`<div style="margin-top:6px;font-size:12px;color:var(--text-muted)">${escHtml(ks.description||'Upload relevant documents')}`;
+          if(ks.whenToUse){html+=`<br><span style="font-size:11px">When to use: ${escHtml(ks.whenToUse)}</span>`}
+          html+=`</div></li>`;
+        }
+      }
+      html+=`</ul></li>`;
+    }
+    html+=`<li>Agent Instructions (Specific tab):<div style="position:relative;margin:6px 0"><code style="display:block;padding:10px 12px;background:rgba(14,17,23,.8);border:1px solid var(--border);border-radius:4px;font-size:11px;white-space:pre-wrap;color:#e2e8f0;line-height:1.6">${escHtml(ns.suggestedPrompt||'')}</code><button onclick="copyText(this.previousElementSibling.textContent,this)" style="position:absolute;top:6px;right:6px;background:rgba(120,79,211,.8);color:#fff;border:none;padding:3px 8px;border-radius:4px;font-size:10px;cursor:pointer">Copy</button></div></li>`;
+    if(ns.welcomeMessage){
+      html+=`<li>Welcome message (right panel):<div style="margin:4px 0;padding:8px 10px;background:rgba(14,17,23,.5);border-radius:4px;font-size:12px;color:#e2e8f0">${escHtml(ns.welcomeMessage)}</div></li>`;
+    }
+    if(ns.chatStarters&&ns.chatStarters.length){
+      html+=`<li>Chat starters (right panel):<ul style="margin:4px 0 4px 16px;list-style:disc">`;
+      for(const s of ns.chatStarters){html+=`<li style="font-size:12px;color:#e2e8f0">"${escHtml(s)}"</li>`}
+      html+=`</ul></li>`;
+    }
+    html+=`<li>Click <strong>Create</strong> in nebulaONE, then click <strong>"Refresh Agents"</strong> in the top bar here to see your new agent</li></ol></div>`;
+
+    if(data.claudePrompt){
+      const fullPrompt=buildFullPrompt(data.claudePrompt,[]);
+      html+=`<p style="margin-top:14px;font-size:13px;color:var(--text-muted)">You can still start building — Claude will create the UI. Add the agent ID after you create it:</p>`;
+      html+=`<div class="prompt-preview" id="ideaPromptPrev">${escHtml(fullPrompt)}</div>`;
+      html+=`<div style="margin-top:8px"><button class="btn btn-pink" onclick="copyIdeaFreeform()">Copy & Go to Claude</button> <span class="copy-feedback" id="ideaCopyFb">Copied!</span></div>`;
+      html+=`<div id="ideaPostCopy" class="hidden"></div>`;
+    }
+  }
+
+  html+='</div>';
+  el.innerHTML=html;show('ideaResult');
+}
+
+function copyIdeaFreeform(){
+  const pre=document.getElementById('ideaPromptPrev');
+  navigator.clipboard.writeText(pre.textContent).then(()=>{
+    const fb=document.getElementById('ideaCopyFb');fb.classList.add('show');
+    setTimeout(()=>fb.classList.remove('show'),4000);
+    const pc=document.getElementById('ideaPostCopy');
+    if(pc){pc.classList.remove('hidden');pc.innerHTML=NEXT_STEPS_HTML;}
+  });
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+// ── Simple markdown rendering ──
+function renderMd(text){
+  return escHtml(text)
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^### (.+)$/gm,'<div style="font-size:14px;font-weight:700;margin:10px 0 4px;color:var(--text-light)">$1</div>')
+    .replace(/^## (.+)$/gm,'<div style="font-size:15px;font-weight:700;margin:12px 0 4px;color:var(--text-light)">$1</div>')
+    .replace(/^# (.+)$/gm,'<div style="font-size:16px;font-weight:700;margin:14px 0 6px;color:var(--text-light)">$1</div>')
+    .replace(/^- (.+)$/gm,'<div style="padding-left:14px;text-indent:-10px">• $1</div>')
+    .replace(/^\d+\. (.+)$/gm,'<div style="padding-left:14px">$&</div>')
+    .replace(/\n/g,'<br>');
+}
+
+function copyText(text,btn){
+  navigator.clipboard.writeText(text).then(()=>{
+    if(btn){const orig=btn.textContent;btn.textContent='Copied!';btn.style.background='#22C55E';setTimeout(()=>{btn.textContent=orig;btn.style.background=''},1500)}
+  });
+}
+
+// ── Pipeline Test ──
+async function testPipeline(){
+  const pipeline=window._matchedPipeline;
+  if(!pipeline||!pipeline.length){alert('No pipeline to test');return}
+  const input=document.getElementById('pipelineInput').value.trim();
+  if(!input){alert('Enter a sample input to test with');return}
+
+  const btn=document.getElementById('testPipelineBtn');
+  btn.disabled=true;btn.textContent='Running...';
+  const stagesEl=document.getElementById('pipelineStages');
+
+  // Build stage UI
+  stagesEl.innerHTML=pipeline.map((a,i)=>
+    `<div class="pipeline-stage" id="stage${i}">
+      <div class="stage-header">
+        <div class="stage-num">${i+1}</div>
+        <div class="stage-name">${escHtml(a.name)}</div>
+        <div class="stage-status" id="stageStatus${i}">Waiting</div>
+      </div>
+      <div class="stage-output" id="stageOutput${i}"></div>
+      <button class="copy-stage" onclick="copyText(document.getElementById('stageOutput${i}').textContent,this)">Copy</button>
+    </div>`
+  ).join('');
+
+  let currentInput=input;
+  let allPassed=true;
+
+  for(let i=0;i<pipeline.length;i++){
+    const a=pipeline[i];
+    const stageEl=document.getElementById(`stage${i}`);
+    const statusEl=document.getElementById(`stageStatus${i}`);
+    const outputEl=document.getElementById(`stageOutput${i}`);
+
+    stageEl.className='pipeline-stage running';
+    statusEl.textContent='Sending...';
+
+    try{
+      await ensureToken();
+
+      // Build prompt: for first agent use raw input, for subsequent agents feed previous output
+      const prompt=i===0
+        ? currentInput
+        : `You are step ${i+1} in a pipeline. The previous agent produced the output below. Your job: ${a.role}\n\nTake the following input and build on it — do NOT start from scratch or ask clarifying questions. Work with what you have.\n\nPrevious agent's output:\n${currentInput}`;
+
+      // Stream the response so user sees it building
+      const r=await fetch(`${API}/api/internal/userConversations/byGptSystemId/${a.id}`,{
+        method:'POST',
+        headers:{'Authorization':`Bearer ${bearer}`,'Content-Type':'application/json','Accept':'text/event-stream'},
+        body:JSON.stringify({question:prompt,session:{sessionIdentifier:`pipe-${i}-${Date.now()}`}})
+      });
+
+      if(!r.ok)throw new Error(`API ${r.status}`);
+
+      const reader=r.body.getReader();
+      const dec=new TextDecoder();
+      let buf='',full='';
+      _sseEv='';
+      statusEl.textContent='Responding...';
+
+      while(true){
+        const{done,value}=await reader.read();
+        if(done)break;
+        buf+=dec.decode(value,{stream:true});
+        const li=buf.lastIndexOf('\n');
+        if(li===-1)continue;
+        const proc=buf.slice(0,li+1);buf=buf.slice(li+1);
+        for(const ev of parseSSE(proc)){
+          if(ev.event==='response-updated'){
+            try{full+=decodeB64(ev.data);outputEl.textContent=full}catch{}
+          }else if(ev.event==='connection-oauth-expired'){
+            statusEl.textContent='OAuth warning...';
+          }else if(ev.event==='forbidden'||ev.event==='bad-request'||ev.event==='internal-server-error'){
+            try{throw new Error(decodeB64(ev.data))}catch(e){throw e}
+          }
+        }
+        stagesEl.scrollTop=stagesEl.scrollHeight;
+      }
+      if(buf.trim())for(const ev of parseSSE(buf)){if(ev.event==='response-updated')try{full+=decodeB64(ev.data);outputEl.textContent=full}catch{}}
+
+      if(!full.trim()){
+        throw new Error('No response received');
+      }
+
+      // Detect OAuth-limited responses
+      const isOAuthLimited=full.toLowerCase().includes('not available in the retrieved data')||full.toLowerCase().includes('please try another query');
+      if(isOAuthLimited){
+        stageEl.className='pipeline-stage error';
+        statusEl.textContent='OAuth required';
+        outputEl.textContent=full+'\n\n⚠ This agent needs browser OAuth to access external data. It won\'t work in a pipeline via API. Try a different agent for this step.';
+        outputEl.style.color='var(--warning)';
+        allPassed=false;
+        break;
+      }
+
+      stageEl.className='pipeline-stage done';
+      statusEl.textContent=`Done (${full.length} chars)`;
+      outputEl.innerHTML=renderMd(full);
+      currentInput=full;
+
+    }catch(e){
+      stageEl.className='pipeline-stage error';
+      statusEl.textContent='Failed';
+      outputEl.textContent=`Error: ${e.message}`;
+      outputEl.style.color='var(--error)';
+      allPassed=false;
+      break;
+    }
+  }
+
+  btn.disabled=false;
+  btn.textContent=allPassed?'Run Again':'Retry';
+}
+
+// ── Call Agent (raw SSE) ──
+let _sseEv='';
+function parseSSE(t){const e=[];for(const l of t.split('\n')){const s=l.trim();if(s.startsWith('event: '))_sseEv=s.slice(7);else if(s.startsWith('data: ')&&_sseEv){e.push({event:_sseEv,data:s.slice(6)});_sseEv=''}}return e}
+
+async function callAgent(aid,prompt){
+  await ensureToken();
+  const r=await fetch(`${API}/api/internal/userConversations/byGptSystemId/${aid}`,{
+    method:'POST',headers:{'Authorization':`Bearer ${bearer}`,'Content-Type':'application/json','Accept':'text/event-stream'},
+    body:JSON.stringify({question:prompt,session:{sessionIdentifier:`q-${Date.now()}`}})
+  });
+  if(!r.ok)throw new Error(`API ${r.status}`);
+  const reader=r.body.getReader();const dec=new TextDecoder();let buf='',txt='';_sseEv='';
+  while(true){const{done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});
+    const li=buf.lastIndexOf('\n');if(li===-1)continue;const p=buf.slice(0,li+1);buf=buf.slice(li+1);
+    for(const ev of parseSSE(p)){if(ev.event==='response-updated')try{txt+=decodeB64(ev.data)}catch{}}
+  }
+  if(buf.trim())for(const ev of parseSSE(buf)){if(ev.event==='response-updated')try{txt+=decodeB64(ev.data)}catch{}}
+  return txt;
+}
+
+// ── Explore: Chat ──
+function addMsg(type,text,name){
+  const a=document.getElementById('chatArea');const d=document.createElement('div');d.className='msg '+type;
+  if(type==='agent'&&name){
+    d.innerHTML=`<div class="aname">${name}</div><div class="c"></div><button class="copy-msg" onclick="copyText(this.parentElement.querySelector('.c').textContent,this)">Copy</button>`;
+    d.querySelector('.c').textContent=text;
+  } else d.textContent=text;
+  a.appendChild(d);a.scrollTop=a.scrollHeight;return d;
+}
+function mkStream(name){
+  const a=document.getElementById('chatArea');const d=document.createElement('div');d.className='msg agent';
+  d.innerHTML=`<div class="aname">${name}</div><div class="c"><span class="typing"><span></span><span></span><span></span></span></div><button class="copy-msg" onclick="copyText(this.parentElement.querySelector('.c').textContent,this)">Copy</button>`;
+  a.appendChild(d);a.scrollTop=a.scrollHeight;return d;
+}
+
+function startChat(){
+  curAgent=document.getElementById('agentSelect').value;
+  curName=document.getElementById('agentSearch').value||'Agent';
+  if(!curAgent){alert('Search and select an agent first');return}
+  convId='';document.getElementById('chatArea').innerHTML='';
+  show('chatInput');document.getElementById('sendBtn').disabled=false;
+  document.getElementById('newChatBtn').style.display='';
+  document.getElementById('msgIn').focus();
+  addMsg('sys',`Connected to ${curName}. Type a message to start.`);
+  // Show example prompts
+  const examples=getExamplePrompts(curName);
+  if(examples.length){
+    const exDiv=document.createElement('div');exDiv.className='msg sys';exDiv.style.cssText='font-style:normal;background:rgba(120,79,211,.08);border:1px solid rgba(120,79,211,.2);border-radius:8px;padding:10px 14px;max-width:100%;align-self:center;text-align:left';
+    exDiv.innerHTML='<div style="font-size:11px;font-weight:600;color:var(--purple-light);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Try asking:</div>'+examples.map(e=>`<div style="cursor:pointer;padding:4px 0;font-size:13px;color:var(--text-light)" onclick="document.getElementById('msgIn').value=this.textContent;document.getElementById('msgIn').focus()" onmouseover="this.style.color='var(--info)'" onmouseout="this.style.color='var(--text-light)'">${e}</div>`).join('');
+    document.getElementById('chatArea').appendChild(exDiv);
+  }
+}
+function newChat(){convId='';document.getElementById('chatArea').innerHTML='';addMsg('sys',`New chat with ${curName}.`);document.getElementById('msgIn').focus()}
+
+function getExamplePrompts(name){
+  const n=name.toLowerCase();
+  if(n.includes('red pen'))return['"Rewrite this: In the realm of AI, leveraging solutions is key."','"Make this sound less robotic: We are pleased to inform you that your application has been received."'];
+  if(n.includes('meeting notes'))return['"Format these notes: discussed timeline, John on budget, scope by Friday"','"Turn this transcript into structured meeting notes with action items"'];
+  if(n.includes('timesheet'))return['"Enhance: worked on bugs, attended standup, helped with code review"'];
+  if(n.includes('pmp study'))return['"Give me a practice question about risk management"','"Quiz me on stakeholder engagement"'];
+  if(n.includes('pm assistant'))return['"What\'s the difference between Agile and Waterfall?"','"Help me create a project charter for a CRM migration"'];
+  if(n.includes('interview'))return['"Generate 3 interview questions for a senior PM role"'];
+  if(n.includes('okr'))return['"Help me write an OKR for improving customer onboarding"'];
+  if(n.includes('system prompt'))return['"Create a system prompt for a friendly customer support agent"'];
+  if(n.includes('clickup'))return['"How do I create a task with subtasks in ClickUp?"'];
+  return['"Tell me about yourself — what can you help with?"','"Say hello and describe your capabilities"'];
+}
+
+async function sendMsg(){
+  const inp=document.getElementById('msgIn');const q=inp.value.trim();if(!q||sending)return;
+  sending=true;inp.value='';document.getElementById('sendBtn').disabled=true;addMsg('user',q);
+  try{
+    await ensureToken();
+    const url=convId?`${API}/api/internal/userConversations/${convId}/segments`:`${API}/api/internal/userConversations/byGptSystemId/${curAgent}`;
+    const md=mkStream(curName);const cel=md.querySelector('.c');let full='',got=false;_sseEv='';
+    const r=await fetch(url,{method:'POST',headers:{'Authorization':`Bearer ${bearer}`,'Content-Type':'application/json','Accept':'text/event-stream'},body:JSON.stringify({question:q,session:{sessionIdentifier:`e-${Date.now()}`}})});
+    if(!r.ok)throw new Error(`API ${r.status}`);
+    const reader=r.body.getReader();const dec=new TextDecoder();let buf='';
+    while(true){const{done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});
+      const li=buf.lastIndexOf('\n');if(li===-1)continue;const p=buf.slice(0,li+1);buf=buf.slice(li+1);
+      for(const ev of parseSSE(p)){
+        if(ev.event==='response-updated'){if(!got){cel.innerHTML='';got=true}try{full+=decodeB64(ev.data);cel.textContent=full}catch{}}
+        else if(ev.event==='step-update'&&!got){try{cel.innerHTML=`<span style="color:var(--text-muted);font-style:italic">${decodeB64(ev.data)}</span>`}catch{}}
+        else if(ev.event==='conversation-and-segment-id'){try{convId=JSON.parse(decodeB64(ev.data)).ConversationId}catch{}}
+        else if(ev.event==='connection-oauth-expired'){try{addMsg('warn',`${JSON.parse(decodeB64(ev.data)).connectionName} needs browser auth.`)}catch{}}
+        else if(['bad-request','not-found','forbidden','unauthorized','internal-server-error'].includes(ev.event)){try{addMsg('err',`${ev.event}: ${decodeB64(ev.data)}`)}catch{addMsg('err',ev.event)}}
+      }
+      document.getElementById('chatArea').scrollTop=document.getElementById('chatArea').scrollHeight;
+    }
+    if(buf.trim())for(const ev of parseSSE(buf)){if(ev.event==='response-updated'){if(!got){cel.innerHTML='';got=true}try{full+=decodeB64(ev.data);cel.textContent=full}catch{}}}
+    if(!got)cel.textContent='(No response received)';
+    else cel.innerHTML=renderMd(full); // render markdown after stream completes
+  }catch(e){addMsg('err',e.message)}
+  finally{sending=false;document.getElementById('sendBtn').disabled=false;inp.focus()}
+}
+</script>
+</body>
+</html>
