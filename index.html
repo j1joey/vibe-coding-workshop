@@ -524,9 +524,9 @@ code{font-family:var(--mono);font-size:12px}
   <a href="#how">How It Works</a>
   <a href="#setup">Setup</a>
   <a href="#safe">Keep It Safe</a>
-  <a href="#explore">Explore Agents</a>
   <a href="#ideas">Project Ideas</a>
   <a href="#own">Your Own Idea</a>
+  <a href="#explore">Explore Agents</a>
   <a href="#ref">API Ref</a>
   <a href="#help">Help</a>
 </nav>
@@ -539,9 +539,9 @@ code{font-family:var(--mono);font-size:12px}
   </div>
   <div class="steps">
     <div class="step"><div class="n">1</div><h4>Get Your Token</h4><p>Generate a PAT from nebulaONE</p></div>
-    <div class="step"><div class="n">2</div><h4>Explore Agents</h4><p>Browse and chat with your AI agents</p></div>
-    <div class="step"><div class="n">3</div><h4>Pick an Idea</h4><p>Choose a suggested project or describe your own</p></div>
-    <div class="step"><div class="n">4</div><h4>Copy & Go</h4><p>Paste prompt in <a href="https://claude.ai" target="_blank" style="color:var(--purple)">Claude.ai</a> — it builds your app</p></div>
+    <div class="step"><div class="n">2</div><h4>Pick an Idea</h4><p>Choose a suggested project or describe your own</p></div>
+    <div class="step"><div class="n">3</div><h4>Copy & Go</h4><p>Paste prompt in <a href="https://claude.ai" target="_blank" style="color:var(--purple)">Claude.ai</a> — it builds your app</p></div>
+    <div class="step"><div class="n">4</div><h4>Run It</h4><p>Download the artifact, open in browser, paste PAT</p></div>
   </div>
   <div class="alert alert-info"><strong>No coding needed.</strong> You'll use plain English. Claude writes the code. You just save the file and open it.</div>
 </div>
@@ -623,15 +623,38 @@ code{font-family:var(--mono);font-size:12px}
   </div>
 </div>
 
-<!-- EXPLORE AGENTS (hidden until verified) -->
-<div class="section hidden" id="explore">
+<!-- YOUR IDEAS (hidden until verified) -->
+<div class="dark hidden" id="ideas"><div class="inner">
   <div class="section-header">
-    <h2><span class="num">02</span> Explore Your Agents</h2>
-    <p class="sub">Chat with any agent to see what it can do. Try a few before deciding what to build.</p>
+    <h2><span class="num">02</span> Project Ideas — Personalized for You</h2>
+    <p class="sub">Based on the <span id="agentCountText">0</span> agents your token has access to. Click any idea to copy a ready-to-use prompt.</p>
+  </div>
+  <div class="cards" id="ideaCards"></div>
+</div></div>
+
+<!-- DESCRIBE YOUR OWN (hidden until verified) -->
+<div class="section hidden" id="own">
+  <div class="section-header">
+    <h2><span class="num">03</span> Have Your Own Idea?</h2>
+    <p class="sub">Describe what you want to build. We'll find the right agents — or help you create a new one.</p>
+  </div>
+  <textarea class="idea-input" id="ideaInput" placeholder="Example: I want a tool that helps me prepare for client meetings by summarizing past notes and generating talking points..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitIdea()}"></textarea>
+  <div style="margin-top:12px;display:flex;gap:10px;align-items:center">
+    <button class="btn btn-pink" id="ideaBtn" onclick="submitIdea()">Get AI Suggestions</button>
+    <span id="ideaSpinner" class="hidden"><span class="spinner"></span> Analyzing your agents...</span>
+  </div>
+  <div id="ideaResult" class="hidden"></div>
+</div>
+
+<!-- EXPLORE AGENTS (supplementary, hidden until verified) -->
+<div class="dark hidden" id="explore"><div class="inner">
+  <div class="section-header">
+    <h2 style="display:flex;align-items:center;gap:10px">Explore Agents <span style="font-size:12px;font-weight:400;color:var(--text-muted);font-family:var(--font)">(optional)</span></h2>
+    <p class="sub">Chat with any agent to test it before building with it.</p>
   </div>
   <div class="explore-controls">
     <div style="position:relative;flex:1;max-width:350px">
-      <input type="text" id="agentSearch" placeholder="Search agents..." oninput="filterAgents()" onfocus="document.getElementById('agentDropdown').style.display='block'" style="width:100%;background:var(--bg-panel);border:1px solid var(--border);color:var(--text-light);padding:8px 14px;border-radius:var(--radius-sm);font-size:13px;font-family:var(--font);outline:none">
+      <input type="text" id="agentSearch" placeholder="Search agents..." oninput="filterAgents()" onfocus="document.getElementById('agentDropdown').style.display='block'" style="width:100%;background:var(--bg-dark);border:1px solid var(--border);color:var(--text-light);padding:8px 14px;border-radius:var(--radius-sm);font-size:13px;font-family:var(--font);outline:none">
       <div id="agentDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:250px;overflow-y:auto;background:var(--bg-panel);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.4)"></div>
     </div>
     <input type="hidden" id="agentSelect">
@@ -643,53 +666,26 @@ code{font-family:var(--mono);font-size:12px}
     <textarea id="msgIn" placeholder="Type a message..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"></textarea>
     <button id="sendBtn" onclick="sendMsg()" disabled>&#9654;</button>
   </div>
-</div>
-
-<!-- YOUR IDEAS (hidden until verified) -->
-<div class="dark hidden" id="ideas"><div class="inner">
-  <div class="section-header">
-    <h2><span class="num">03</span> Project Ideas — Personalized for You</h2>
-    <p class="sub">Based on the <span id="agentCountText">0</span> agents your token has access to. Click any idea to copy a ready-to-use prompt.</p>
-  </div>
-  <div class="cards" id="ideaCards"></div>
 </div></div>
-
-<!-- DESCRIBE YOUR OWN (hidden until verified) -->
-<div class="section hidden" id="own">
-  <div class="section-header">
-    <h2><span class="num">04</span> Have Your Own Idea?</h2>
-    <p class="sub">Describe what you want to build. We'll find the right agents — or help you create a new one.</p>
-  </div>
-  <textarea class="idea-input" id="ideaInput" placeholder="Example: I want a tool that helps me prepare for client meetings by summarizing past notes and generating talking points..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitIdea()}"></textarea>
-  <div style="margin-top:12px;display:flex;gap:10px;align-items:center">
-    <button class="btn btn-pink" id="ideaBtn" onclick="submitIdea()">Get AI Suggestions</button>
-    <span id="ideaSpinner" class="hidden"><span class="spinner"></span> Analyzing your agents...</span>
-  </div>
-  <div id="ideaResult" class="hidden"></div>
-</div>
 
 <!-- API REF -->
 <div class="section" id="ref">
   <div class="section-header">
-    <h2><span class="num">05</span> API Reference <a href="#" onclick="event.preventDefault();document.getElementById('apiDetails').classList.toggle('hidden');this.textContent=document.getElementById('apiDetails').classList.contains('hidden')?'(show)':'(hide)'" style="font-size:12px;color:var(--info);font-weight:400;font-family:var(--font);margin-left:8px">(show)</a></h2>
+    <h2><span class="num">04</span> API Reference <a href="#" onclick="event.preventDefault();document.getElementById('apiDetails').classList.toggle('hidden');this.textContent=document.getElementById('apiDetails').classList.contains('hidden')?'(show)':'(hide)'" style="font-size:12px;color:var(--info);font-weight:400;font-family:var(--font);margin-left:8px">(show)</a></h2>
     <p class="sub">For the curious. The generated prompts handle all of this for you.</p>
   </div>
   <div id="apiDetails" class="hidden">
-  <table>
-    <tr><th>Method</th><th>Path</th><th>Purpose</th></tr>
-    <tr><td><code>POST</code></td><td><code>/api/internal/authorization/UserAccessToken/GenerateToken</code></td><td>Exchange PAT → 30-min bearer</td></tr>
-    <tr><td><code>GET</code></td><td><code>/api/internal/gpts/common/management/AvailableForConversation</code></td><td>List agents you can actually use</td></tr>
-    <tr><td><code>POST</code></td><td><code>/api/internal/userConversations/byGptSystemId/{id}</code></td><td>New conversation</td></tr>
-    <tr><td><code>POST</code></td><td><code>/api/internal/userConversations/{convId}/segments</code></td><td>Follow-up message</td></tr>
-  </table>
-  <div class="alert alert-warn"><strong>SSE Quirk:</strong> Event name and data are separated by a blank line. Parsers must keep event name across blank lines.</div>
+  <p>nebulaONE has a full API reference where you can browse every endpoint and see request/response schemas:</p>
+  <p style="margin:16px 0"><a href="https://cf.nebulaone.ai/docs/api" target="_blank" class="btn btn-purple" style="text-decoration:none;display:inline-block">Open API Reference</a></p>
+  <p style="font-size:12px;color:var(--text-muted)">You'll need to be signed into nebulaONE to access the docs. Covers all endpoints including conversations, agents, config states, and more.</p>
+  <div class="alert alert-warn" style="margin-top:14px"><strong>SSE Quirk:</strong> Event name and data are separated by a blank line. Parsers must keep event name across blank lines.</div>
   </div>
 </div>
 
 <!-- TROUBLESHOOTING -->
 <div class="dark" id="help"><div class="inner">
   <div class="section-header">
-    <h2><span class="num">06</span> Troubleshooting</h2>
+    <h2><span class="num">05</span> Troubleshooting</h2>
     <p class="sub">Common issues and what to tell Claude to fix them.</p>
   </div>
   <table>
@@ -803,7 +799,7 @@ async function verify(){
     populateDropdown();generateIdeas();
     show('explore');show('ideas');show('own');
     hide('pastePrompt');
-    setTimeout(()=>document.getElementById('explore').scrollIntoView({behavior:'smooth',block:'start'}),300);
+    setTimeout(()=>document.getElementById('ideas').scrollIntoView({behavior:'smooth',block:'start'}),300);
   }catch(e){
     setStatus('error','Failed');btn.disabled=false;btn.textContent='Verify Token';
     const isCors=e.message.includes('Failed to fetch')||e.message.includes('NetworkError')||e.message.includes('TypeError');
@@ -1228,8 +1224,13 @@ function displayIdeaResult(userDesc,data){
 
   if(data.needsNewAgent&&data.newAgentSetup){
     const ns=data.newAgentSetup;
-    html+=`<div class="new-agent-box"><h5>Create a personal agent: ${escHtml(ns.suggestedName||'Custom Agent')}</h5>`;
-    html+=`<p>No existing agents are a strong fit. Create one in nebulaONE:</p><ol>`;
+    window._pendingAgentConfig=ns;
+    html+=`<div class="new-agent-box"><h5>You need a new agent: ${escHtml(ns.suggestedName||'Custom Agent')}</h5>`;
+    html+=`<p style="margin-bottom:12px">No existing agents are a strong fit. We can create one for you automatically.</p>`;
+    html+=`<button class="btn btn-pink" style="font-size:14px;padding:10px 24px" onclick="this.disabled=true;createAgentFromConfig(window._pendingAgentConfig,document.getElementById('createAgentStatus'))">Create This Agent for Me</button>`;
+    html+=`<div id="createAgentStatus" style="margin-top:10px"></div>`;
+    html+=`<div style="margin-top:14px"><a href="#" onclick="event.preventDefault();document.getElementById('manualCreateInstructions').classList.toggle('hidden');this.textContent=document.getElementById('manualCreateInstructions').classList.contains('hidden')?'Or create it manually':'Hide manual steps'" style="font-size:12px;color:var(--info)">Or create it manually</a></div>`;
+    html+=`<div id="manualCreateInstructions" class="hidden" style="margin-top:10px"><ol>`;
     html+=`<li>Go to <a href="https://cf.nebulaone.ai" target="_blank" style="color:var(--info)">cf.nebulaone.ai</a> → Settings → Personal Agents → Create</li>`;
     html+=`<li>Name: <strong>${escHtml(ns.suggestedName||'Custom Agent')}</strong></li>`;
     if(ns.shortDescription){
@@ -1273,7 +1274,7 @@ function displayIdeaResult(userDesc,data){
       for(const s of ns.chatStarters){html+=`<li style="font-size:12px;color:#e2e8f0">"${escHtml(s)}"</li>`}
       html+=`</ul></li>`;
     }
-    html+=`<li>Click <strong>Create</strong> in nebulaONE, then click <strong>"Refresh Agents"</strong> in the top bar here to see your new agent</li></ol></div>`;
+    html+=`<li>Click <strong>Create</strong> in nebulaONE, then click <strong>"Refresh Agents"</strong> in the top bar here to see your new agent</li></ol></div></div>`;
 
     if(data.claudePrompt){
       const fullPrompt=buildFullPrompt(data.claudePrompt,[]);
@@ -1310,6 +1311,89 @@ function renderMd(text){
     .replace(/^- (.+)$/gm,'<div style="padding-left:14px;text-indent:-10px">• $1</div>')
     .replace(/^\d+\. (.+)$/gm,'<div style="padding-left:14px">$&</div>')
     .replace(/\n/g,'<br>');
+}
+
+// ── Create Personal Agent via API ──
+async function createAgentFromConfig(config,statusEl){
+  try{
+    await ensureToken();
+
+    // Step 1: Create empty config state
+    statusEl.innerHTML='<span class="spinner"></span> Creating agent...';
+    const r1=await fetch(`${API}/api/internal/configStates/byGptSystemType/User?hipaaCompliant=false`,{
+      method:'POST',headers:{'Authorization':`Bearer ${bearer}`,'Content-Type':'application/json'}
+    });
+    if(!r1.ok)throw new Error(`Failed to initialize (${r1.status})`);
+    const d1=await r1.json();
+    const configId=d1.configuration.configStateId;
+
+    // Step 2: Configure agent
+    statusEl.innerHTML='<span class="spinner"></span> Configuring...';
+    await ensureToken();
+
+    const dataSources=[];
+    if(config.capabilities&&config.capabilities.includes('Search the Internet')){
+      dataSources.push({dataSourceType:'BingSearch',countResults:config.searchResultCount||5,description:'Search the internet',id:null});
+    }
+    if(config.knowledgeSources){
+      for(const ks of config.knowledgeSources){
+        if(ks.type==='website'&&ks.url){
+          dataSources.push({dataSourceType:'Website',url:ks.url,countPages:ks.maxPages||10,description:ks.whenToUse||'Reference website',id:null});
+        }
+      }
+    }
+
+    const capTypes=[];
+    if(config.capabilities&&config.capabilities.includes('Search the Internet'))capTypes.push('InternetSearch');
+
+    const prompts=(config.chatStarters||[]).map(s=>({title:s.slice(0,40),promptText:s,configStatePromptId:null}));
+
+    const updateBody={
+      gptSystemName:config.suggestedName||'Custom Agent',
+      description:config.shortDescription||'',
+      introduction:config.welcomeMessage||'',
+      systemPrompt:config.suggestedPrompt||'',
+      temperature:0.7,topP:1.0,frequencyPenalty:0.0,maxTokens:4000,
+      status:'Active',isHidden:false,
+      restrictAnswerToInformationReturnedByTools:false,
+      capabilityTypes:capTypes,
+      dataSources:dataSources,
+      prompts:prompts,
+      tokenLimitSettings:{limitTokens:false,tokensPerDay:0,tokensPerUserPerDay:0,
+        thresholdTokensPerDayMessage:'',thresholdTokensPerUserPerDayMessage:'',
+        limitReachedTokensPerDayMessage:'',limitReachedTokensPerUserPerDayMessage:''}
+    };
+
+    const r2=await fetch(`${API}/api/internal/configStates/${configId}`,{
+      method:'PUT',headers:{'Authorization':`Bearer ${bearer}`,'Content-Type':'application/json'},
+      body:JSON.stringify(updateBody)
+    });
+    if(!r2.ok){const err=await r2.text();throw new Error(`Configuration failed (${r2.status}): ${err.slice(0,100)}`)}
+
+    // Step 3: Create the agent
+    statusEl.innerHTML='<span class="spinner"></span> Finalizing...';
+    await ensureToken();
+    const r3=await fetch(`${API}/api/internal/configStates/${configId}/createGptSystem/`,{
+      method:'POST',headers:{'Authorization':`Bearer ${bearer}`,'Content-Type':'application/json'}
+    });
+    if(!r3.ok)throw new Error(`Agent creation failed (${r3.status})`);
+    const d3=await r3.json();
+
+    // Auto-refresh agent list
+    statusEl.innerHTML='<span class="spinner"></span> Refreshing agent list...';
+    agents=await fetchAgents();
+    populateDropdown();generateIdeas();
+    document.getElementById('agentCountText').textContent=agents.length;
+
+    statusEl.innerHTML=`<div style="color:var(--success);font-weight:600">&#10003; ${escHtml(config.suggestedName||'Agent')} is ready! It's been added to your agent list.</div>`;
+    return d3.gptSystemId;
+  }catch(e){
+    statusEl.innerHTML=`<div style="color:var(--error)">Creation failed: ${escHtml(e.message)}</div><p style="font-size:12px;color:var(--text-muted);margin-top:6px">You can still create it manually using the steps below.</p>`;
+    // Show manual instructions
+    const manual=document.getElementById('manualCreateInstructions');
+    if(manual)manual.classList.remove('hidden');
+    return null;
+  }
 }
 
 function copyText(text,btn){
