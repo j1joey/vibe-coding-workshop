@@ -145,8 +145,8 @@ nav.main-nav a:hover{color:var(--purple);border-bottom-color:rgba(120,79,211,.3)
   display:flex;align-items:center;gap:10px;margin-bottom:6px;
 }
 .section h2 .num{
-  color:var(--pink);font-size:14px;font-weight:700;
-  background:rgba(238,57,108,.08);border:1px solid rgba(238,57,108,.2);
+  color:var(--purple);font-size:14px;font-weight:700;
+  background:rgba(120,79,211,.1);border:1px solid rgba(120,79,211,.25);
   padding:2px 9px;border-radius:100px;letter-spacing:.3px;
   flex-shrink:0;
 }
@@ -483,7 +483,6 @@ code{font-family:var(--mono);font-size:12px}
       <path fill-rule="evenodd" clip-rule="evenodd" d="M172.747 36.094V11.713H168.361V36.094H172.747Z" fill="#fff"/>
       <path fill-rule="evenodd" clip-rule="evenodd" d="M193.69 36.094V17.814H189.664V20.258C188.145 18.245 186.336 17.391 183.696 17.391C178.284 17.391 174.392 21.448 174.392 27.025C174.392 32.601 178.253 36.525 183.594 36.525C186.171 36.525 187.918 35.702 189.664 33.721V36.094H193.69ZM189.539 27.087C189.539 30.126 187.557 32.499 184.229 32.499C180.9 32.499 178.817 30.322 178.817 27.119C178.817 23.915 181.025 21.409 184.158 21.409C187.291 21.409 189.539 23.751 189.539 27.087Z" fill="#fff"/>
       <path fill-rule="evenodd" clip-rule="evenodd" d="M198.733 23.327C198.733 17.422 203.519 12.636 209.424 12.636C215.329 12.636 220.115 17.422 220.115 23.327C220.115 29.232 215.329 34.018 209.424 34.018C203.519 34.018 198.733 29.232 198.733 23.327ZM244.073 32.647V10.146H241.582V29.812L226.999 13.192L224.508 10.357V36.516H226.999V16.967L241.582 33.587L244.073 36.422V32.647ZM250.017 12.636H261.929V10.146H247.526V36.516H261.929V34.025H250.017V24.58H261.929V22.089H250.017V12.644V12.636ZM222.613 23.327C222.613 16.059 216.731 10.161 209.463 10.138H209.432C202.148 10.138 196.243 16.043 196.243 23.327C196.243 30.611 202.148 36.516 209.432 36.516C216.715 36.516 222.621 30.611 222.621 23.327H222.613Z" fill="#fff"/>
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M135.758 46.549C135.758 44.638 134.293 43.165 132.375 43.165C131.286 43.165 130.393 43.612 129.853 44.419V43.314H128.983V51.992H129.853V48.632C130.417 49.455 131.286 49.885 132.351 49.885C134.262 49.885 135.758 48.421 135.758 46.541V46.549Z" fill="rgba(255,255,255,.5)"/>
       <defs>
         <linearGradient id="hg1" x1="21.732" y1="41.789" x2="11.736" y2="52.733" gradientUnits="userSpaceOnUse"><stop stop-color="#493578"/><stop offset="1" stop-color="#634B9C"/></linearGradient>
         <linearGradient id="hg2" x1="68.548" y1="8.09" x2="58.835" y2="17.768" gradientUnits="userSpaceOnUse"><stop stop-color="#3ABEEA"/><stop offset="1" stop-color="#005BA3"/></linearGradient>
@@ -544,6 +543,7 @@ code{font-family:var(--mono);font-size:12px}
     <div class="step"><div class="n">4</div><h4>Run It</h4><p>Download the artifact, open in browser, paste PAT</p></div>
   </div>
   <div class="alert alert-info"><strong>No coding needed.</strong> You'll use plain English. Claude writes the code. You just save the file and open it.</div>
+  <div class="alert alert-tip"><strong>What's Claude?</strong> <a href="https://claude.ai" target="_blank" style="color:var(--purple)">Claude.ai</a> is a free AI tool by Anthropic. Sign up with your email — it's separate from your Cloudforce account, no special access needed.</div>
 </div>
 
 <!-- SETUP -->
@@ -558,7 +558,7 @@ code{font-family:var(--mono);font-size:12px}
     <li>Click <strong>"Settings"</strong></li>
     <li>Select <strong>"Access Tokens"</strong> from the settings menu</li>
     <li>Click <strong>"New Token"</strong></li>
-    <li>Name it (e.g. "Workshop") and click <strong>Generate</strong></li>
+    <li>Name it (e.g. "Workshop"). The default chat permissions are already selected — just click <strong>Generate</strong></li>
     <li><strong>Copy immediately</strong> — you won't see it again</li>
   </ol>
   <div class="alert alert-warn" style="background:rgba(255,171,0,.1);border-color:var(--warning);color:var(--warning)"><strong>Save your token!</strong> Starts with <code>n1pat_</code>. Paste it in the bar at the top of this page.</div>
@@ -616,7 +616,7 @@ code{font-family:var(--mono);font-size:12px}
   <div style="background:linear-gradient(135deg,var(--purple-darker),var(--purple-dark));border-radius:var(--radius);padding:36px 32px;color:#fff;max-width:600px;margin:0 auto;box-shadow:0 8px 32px rgba(120,79,211,.25)">
     <h3 style="font-size:22px;font-weight:700;margin-bottom:8px;color:#fff">Ready? Paste your token above.</h3>
     <p style="font-size:14px;color:rgba(255,255,255,.65);margin-bottom:16px">Paste your <code style="background:rgba(255,255,255,.15);border:none;color:#fff">n1pat_...</code> token in the bar at the top of this page and click <strong>Verify Token</strong>.</p>
-    <p style="font-size:13px;color:rgba(255,255,255,.45);margin:0">We'll load your agents and generate personalized project ideas for you.</p>
+    <p style="font-size:13px;color:rgba(255,255,255,.45);margin:0">Once verified, we'll load your agents and show personalized project ideas, AI suggestions, and more below.</p>
     <div style="margin-top:18px;padding:10px 16px;background:rgba(255,171,0,.12);border:1px solid rgba(255,171,0,.3);border-radius:6px;font-size:12px;color:rgba(255,200,120,.9);text-align:left">
       <strong>Not working?</strong> If nothing happens when you click Verify, your browser may be blocking the connection. Open a terminal in this file's folder and run <code style="background:rgba(255,255,255,.15);border:none;color:#fff;font-size:11px">python -m http.server 8080</code>, then open <code style="background:rgba(255,255,255,.15);border:none;color:#fff;font-size:11px">http://localhost:8080/vibe-coding-workshop.html</code>
     </div>
@@ -671,7 +671,7 @@ code{font-family:var(--mono);font-size:12px}
 <!-- API REF -->
 <div class="section" id="ref">
   <div class="section-header">
-    <h2><span class="num">04</span> API Reference <a href="#" onclick="event.preventDefault();document.getElementById('apiDetails').classList.toggle('hidden');this.textContent=document.getElementById('apiDetails').classList.contains('hidden')?'(show)':'(hide)'" style="font-size:12px;color:var(--info);font-weight:400;font-family:var(--font);margin-left:8px">(show)</a></h2>
+    <h2>API Reference <a href="#" onclick="event.preventDefault();document.getElementById('apiDetails').classList.toggle('hidden');this.textContent=document.getElementById('apiDetails').classList.contains('hidden')?'(show)':'(hide)'" style="font-size:12px;color:var(--info);font-weight:400;font-family:var(--font);margin-left:8px">(show)</a></h2>
     <p class="sub">For the curious. The generated prompts handle all of this for you.</p>
   </div>
   <div id="apiDetails" class="hidden">
@@ -685,7 +685,7 @@ code{font-family:var(--mono);font-size:12px}
 <!-- TROUBLESHOOTING -->
 <div class="dark" id="help"><div class="inner">
   <div class="section-header">
-    <h2><span class="num">05</span> Troubleshooting</h2>
+    <h2>Troubleshooting</h2>
     <p class="sub">Common issues and what to tell Claude to fix them.</p>
   </div>
   <table>
@@ -891,26 +891,26 @@ function generateIdeas(){
     prompt:`Build a meeting notes pipeline. I paste a transcript and click "Process". Step 1: send to Meeting Notes (ID: ${meetingNotes.id}) with "Format into structured internal meeting notes with sections for discussion, decisions, and action items." Step 2: send result to ${general.name} (ID: ${general.id}) with "Extract all action items. For each, list the owner, task, and deadline." Step 3: send to The Red Pen (ID: ${redPen.id}) with "Rewrite to sound natural and human." Show each stage with progress indicators and a Copy All button.`});
 
   if(timesheet)ideas.push({title:'Daily Timesheet Helper',desc:'Paste rough timesheet notes → get clean, professional entries back. Saves 15 min/day.',agents:[timesheet],
-    prompt:`Build a timesheet helper. Text area for rough notes, a "Clean Up" button that sends to ${timesheet.name} (ID: ${timesheet.id}) with "Enhance these timesheet entries to be professional and clear." Show before/after side by side with a Copy button.`});
+    prompt:`Build a timesheet helper. Text area on the left for rough notes (one per line). A "Clean Up" button sends each line to ${timesheet.name} (ID: ${timesheet.id}) with "Enhance this timesheet entry to be professional and clear." Display results in a table: original note on the left, enhanced version on the right, with a copy icon per row and a "Copy All" button that copies all enhanced entries. Include a total hours estimate if mentioned.`});
 
   if(pmpStudy)ideas.push({title:'PMP Quiz App',desc:'Practice questions with scoring. Click "Next Question" to get a new one, answer, see if you\'re right. Tracks your streak.',agents:[pmpStudy],
     prompt:`Build a PMP quiz app. A "Next Question" button sends "Give me a PMP practice question with 4 choices, mark the correct answer" to PMP Study Mode (ID: ${pmpStudy.id}). Display the question and 4 clickable answer buttons. When clicked, show if correct/wrong and update the score counter. Track streak. Make it fun with colors for right/wrong.`});
 
   if(interview)ideas.push({title:'Interview Prep Tool',desc:'Enter a job title → get tailored interview questions with sample answers.',agents:[interview,redPen].filter(Boolean),
-    prompt:`Build an interview prep tool. Input field for job title. "Generate Questions" sends to Interview Assistant (ID: ${interview.id}) with "Generate 5 interview questions for [title] with sample answers."${redPen?` Then "Polish Answers" sends the answers to The Red Pen (ID: ${redPen.id}) to make them sound natural.`:''} Show questions and answers in a clean list.`});
+    prompt:`Build an interview prep tool. Input field for job title and experience level dropdown (Junior/Mid/Senior). "Generate Questions" sends to Interview Assistant (ID: ${interview.id}) with "Generate 5 interview questions for a [level] [title] role with sample answers and what the interviewer is looking for."${redPen?` Then "Polish Answers" sends the answers to The Red Pen (ID: ${redPen.id}) to make them sound natural.`:''} Display as expandable cards: question on top (click to reveal answer). Include a "Practice Mode" toggle that hides answers until clicked. Add a notes field per question for the user to jot their own answer.`});
 
   if(okr)ideas.push({title:'OKR Writing Assistant',desc:'Describe a goal → get properly formatted OKRs with measurable key results.',agents:[okr],
-    prompt:`Build an OKR helper. Text area to describe a goal. "Write OKR" sends to OKR Agent (ID: ${okr.id}) with "Write a properly formatted OKR with 3-5 measurable key results." Show result with a Copy button.`});
+    prompt:`Build an OKR writer. Input for team name, text area to describe the goal, and a quarter selector (Q1-Q4). "Generate OKR" sends to OKR Agent (ID: ${okr.id}) with "Write a properly formatted OKR for [team] for [quarter] with 3-5 measurable key results for: [goal]." Display the result as a structured card: Objective as a header, each Key Result as a progress-bar row (starting at 0%), with inline editing so the user can tweak the wording. Include "Copy as text" and "Copy as table" buttons.`});
 
   if(sales.length>0){const agent=sales[0];
     ideas.push({title:'Sales Prep Dashboard',desc:'Enter a prospect name → get intel, talking points, and suggested approach.',agents:[agent],
-    prompt:`Build a sales prep tool. Input for prospect/company name. "Research" sends to ${agent.name} (ID: ${agent.id}) with "Give me key intel, talking points, and suggested approach for [name]." Show results in organized sections.`})}
+    prompt:`Build a sales prep dashboard. Input for prospect/company name and optional notes field. "Research" sends to ${agent.name} (ID: ${agent.id}) with "Give me key intel, talking points, objections to prepare for, and a suggested approach for [name]." Display results as a dashboard with distinct panels: Company Overview (top), Key Talking Points (bulleted, with copy buttons), Potential Objections & Responses (two-column), and Suggested Approach (highlighted card). Include a "Save as PDF" print button and a "Prep Checklist" section with checkboxes.`})}
 
   if(sysprompt)ideas.push({title:'Agent Builder',desc:'Describe what you want an agent to do → get a ready-to-use system prompt you can paste into nebulaONE.',agents:[sysprompt],
-    prompt:`Build an agent creator tool. Text area to describe desired agent behavior. "Generate Prompt" sends to System Prompt Generator (ID: ${sysprompt.id}) with "Create a system prompt for an agent that does [description]." Show the generated prompt with a Copy button and instructions for creating a personal agent in nebulaONE.`});
+    prompt:`Build an agent builder tool. Text area to describe desired agent behavior, a tone selector (Professional/Friendly/Technical/Creative), and a complexity slider (Simple/Detailed). "Generate" sends to System Prompt Generator (ID: ${sysprompt.id}) with "Create a system prompt for a [tone] agent that does [description]. Make it [complexity]." Display the result in a live preview: the system prompt in an editable code block on the left, and a simulated "test chat" on the right where the user can try talking to see how the prompt would work. Include a "Copy Prompt" button and step-by-step instructions for creating the agent in nebulaONE.`});
 
   if(pmAssistant)ideas.push({title:'Project Kickoff Generator',desc:'Describe a project → get a structured kickoff document with timeline, risks, and stakeholder map.',agents:[pmAssistant],
-    prompt:`Build a project kickoff tool. Text area for project description. "Generate Kickoff" sends to PM Assistant (ID: ${pmAssistant.id}) with "Create a project kickoff document with sections for: objectives, scope, timeline, key risks, stakeholder map, and success criteria." Show the result with a Copy button.`});
+    prompt:`Build a project kickoff generator. Inputs: project name, client name, target date, and a text area for project description. "Generate Kickoff" sends to PM Assistant (ID: ${pmAssistant.id}) with "Create a project kickoff document for [project] ([client]) targeting [date] with sections: Executive Summary, Objectives, Scope (In/Out), Timeline with milestones, Key Risks with mitigation, Stakeholder Map (RACI), and Success Criteria." Display as a formatted document with a table of contents sidebar, each section as a distinct card with an edit icon, and a print-friendly "Export" button at the top.`});
 
   // Always add wild card
   ideas.push({title:'Chain Any Two Agents',desc:'Pick any two agents from your list and wire them together. Agent A\'s output becomes Agent B\'s input.',agents:[],
@@ -1005,6 +1005,24 @@ Do NOT reset eventName on blank lines.
 ${agentSection}
 ## Design
 Dark theme: bg #161c24, panels #212B36, text #EEEEEE. Purple #784FD3, pink #EE396C.
+
+## IMPORTANT: Creative output design
+Do NOT just build another chat interface. The agent's response is raw material — your job is to present it in the most useful, visually compelling way for the specific use case. Think about:
+
+- **Structured layouts**: If the agent returns a list, show cards/tiles, not a text wall. If it returns steps, show a timeline or checklist.
+- **Actionable UI**: Add copy buttons, download options, print views, or "send to email" where relevant.
+- **Multi-section display**: Parse the agent's markdown response and render it into distinct UI sections (summary panel, details panel, action items, etc.)
+- **Visual hierarchy**: Use headers, color-coded categories, progress indicators, or status badges to make the output scannable.
+- **Input variety**: Don't default to a single text box. Use dropdowns, sliders, toggles, multi-step forms, or drag-and-drop where the use case calls for it.
+
+Examples of creative output (NOT chat):
+- Job finder → card grid with company logo placeholders, salary range badges, "Apply" buttons, filter sidebar
+- Meeting notes tool → split view: structured notes on left, action items checklist on right, "Copy for Slack" button
+- Study quiz → flashcard UI with flip animation, score tracker, streak counter, difficulty selector
+- Email drafter → three-column before/during/after view, tone selector dropdown, copy button on final version
+- Report generator → formatted document preview with table of contents, print stylesheet, export button
+
+Always render the agent's markdown response into proper HTML (bold, headers, lists, tables) — never show raw markdown to the user.
 
 ## Build this:
 ${description}`;
@@ -1224,12 +1242,21 @@ function displayIdeaResult(userDesc,data){
 
   if(data.needsNewAgent&&data.newAgentSetup){
     const ns=data.newAgentSetup;
+    ns._claudePrompt=data.claudePrompt||'';
     window._pendingAgentConfig=ns;
-    html+=`<div class="new-agent-box"><h5>You need a new agent: ${escHtml(ns.suggestedName||'Custom Agent')}</h5>`;
-    html+=`<p style="margin-bottom:12px">No existing agents are a strong fit. We can create one for you automatically.</p>`;
+    html+=`<div class="new-agent-box"><h5>We'll create a new agent for you: ${escHtml(ns.suggestedName||'Custom Agent')}</h5>`;
+    if(ns.shortDescription){html+=`<p style="font-size:14px;color:var(--text-light);margin-bottom:10px">${escHtml(ns.shortDescription)}</p>`}
+    html+=`<p style="font-size:13px;color:var(--text-muted);margin-bottom:14px">No existing agents are a strong fit for this. Here's what we'll set up:</p>`;
+    html+=`<div style="display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13px;margin-bottom:16px;padding:12px 14px;background:rgba(14,17,23,.4);border-radius:var(--radius-sm);border:1px solid var(--border)">`;
+    html+=`<span style="color:var(--text-muted)">Name:</span><span style="color:var(--text-light)">${escHtml(ns.suggestedName||'Custom Agent')}</span>`;
+    if(ns.capabilities&&ns.capabilities.length){html+=`<span style="color:var(--text-muted)">Capabilities:</span><span style="color:var(--text-light)">${ns.capabilities.map(c=>escHtml(c)).join(', ')}</span>`}
+    if(ns.knowledgeSources&&ns.knowledgeSources.length){html+=`<span style="color:var(--text-muted)">Knowledge:</span><span style="color:var(--text-light)">${ns.knowledgeSources.map(k=>k.type==='website'?escHtml(k.url||'Website'):escHtml(k.description||'Files')).join(', ')}</span>`}
+    if(ns.chatStarters&&ns.chatStarters.length){html+=`<span style="color:var(--text-muted)">Starters:</span><span style="color:var(--text-light)">"${escHtml(ns.chatStarters[0].slice(0,50))}${ns.chatStarters[0].length>50?'...':''}"${ns.chatStarters.length>1?' + '+(ns.chatStarters.length-1)+' more':''}</span>`}
+    html+=`<span style="color:var(--text-muted)">Prompt:</span><span style="color:var(--text-light)">${escHtml((ns.suggestedPrompt||'').slice(0,120))}${(ns.suggestedPrompt||'').length>120?'...':''}</span>`;
+    html+=`</div>`;
     html+=`<button class="btn btn-pink" style="font-size:14px;padding:10px 24px" onclick="this.disabled=true;createAgentFromConfig(window._pendingAgentConfig,document.getElementById('createAgentStatus'))">Create This Agent for Me</button>`;
     html+=`<div id="createAgentStatus" style="margin-top:10px"></div>`;
-    html+=`<div style="margin-top:14px"><a href="#" onclick="event.preventDefault();document.getElementById('manualCreateInstructions').classList.toggle('hidden');this.textContent=document.getElementById('manualCreateInstructions').classList.contains('hidden')?'Or create it manually':'Hide manual steps'" style="font-size:12px;color:var(--info)">Or create it manually</a></div>`;
+    html+=`<div id="createFallback"><div style="margin-top:14px"><a href="#" onclick="event.preventDefault();document.getElementById('manualCreateInstructions').classList.toggle('hidden');this.textContent=document.getElementById('manualCreateInstructions').classList.contains('hidden')?'Or create it manually':'Hide manual steps'" style="font-size:12px;color:var(--info)">Or create it manually</a></div>`;
     html+=`<div id="manualCreateInstructions" class="hidden" style="margin-top:10px"><ol>`;
     html+=`<li>Go to <a href="https://cf.nebulaone.ai" target="_blank" style="color:var(--info)">cf.nebulaone.ai</a> → Settings → Personal Agents → Create</li>`;
     html+=`<li>Name: <strong>${escHtml(ns.suggestedName||'Custom Agent')}</strong></li>`;
@@ -1278,11 +1305,12 @@ function displayIdeaResult(userDesc,data){
 
     if(data.claudePrompt){
       const fullPrompt=buildFullPrompt(data.claudePrompt,[]);
-      html+=`<p style="margin-top:14px;font-size:13px;color:var(--text-muted)">You can still start building — Claude will create the UI. Add the agent ID after you create it:</p>`;
+      html+=`<p style="margin-top:14px;font-size:13px;color:var(--text-muted)">You can still start building. Claude will create the app, and you'll paste your agent's ID into the code after you create the agent in nebulaONE (find the ID in Settings &gt; Personal Agents &gt; click your agent).</p>`;
       html+=`<div class="prompt-preview" id="ideaPromptPrev">${escHtml(fullPrompt)}</div>`;
       html+=`<div style="margin-top:8px"><button class="btn btn-pink" onclick="copyIdeaFreeform()">Copy & Go to Claude</button> <span class="copy-feedback" id="ideaCopyFb">Copied!</span></div>`;
       html+=`<div id="ideaPostCopy" class="hidden"></div>`;
     }
+    html+=`</div>`; // close createFallback
   }
 
   html+='</div>';
@@ -1385,11 +1413,27 @@ async function createAgentFromConfig(config,statusEl){
     populateDropdown();generateIdeas();
     document.getElementById('agentCountText').textContent=agents.length;
 
-    statusEl.innerHTML=`<div style="color:var(--success);font-weight:600">&#10003; ${escHtml(config.suggestedName||'Agent')} is ready! It's been added to your agent list.</div>`;
+    const newAgentPrompt=buildFullPrompt(
+      config._claudePrompt||`Build an app that uses the ${config.suggestedName} agent for: ${config.suggestedPrompt?.slice(0,100)||'the described purpose'}`,
+      [{id:d3.gptSystemId,name:config.suggestedName||'Custom Agent'}]
+    );
+    statusEl.innerHTML=`<div style="color:var(--success);font-weight:600;margin-bottom:12px">&#10003; ${escHtml(config.suggestedName||'Agent')} is ready!</div>`
+      +`<p style="font-size:13px;color:var(--text-muted);margin-bottom:10px">Your agent has been created and added to your list. Copy the prompt below to build your app with it:</p>`
+      +`<div class="prompt-preview" id="newAgentPrompt">${escHtml(newAgentPrompt)}</div>`
+      +`<div class="copy-row" style="margin-top:8px"><button class="btn btn-pink" onclick="navigator.clipboard.writeText(document.getElementById('newAgentPrompt').textContent).then(()=>{this.textContent='Copied!';this.style.background='#22C55E';setTimeout(()=>{this.textContent='Copy & Go to Claude';this.style.background=''},3000)})">Copy & Go to Claude</button><span class="copy-feedback" id="newAgentCopyFb">Copied!</span></div>`
+      +`<div id="newAgentPostCopy" class="hidden"></div>`;
+    // Hide the fallback/manual section since creation succeeded
+    const fb=document.getElementById('createFallback');
+    if(fb)fb.style.display='none';
+    // Wire up next steps
+    document.querySelector('#createAgentStatus .btn-pink')?.addEventListener('click',()=>{
+      const pc=document.getElementById('newAgentPostCopy');
+      if(pc){pc.classList.remove('hidden');pc.innerHTML=NEXT_STEPS_HTML;}
+    });
     return d3.gptSystemId;
   }catch(e){
-    statusEl.innerHTML=`<div style="color:var(--error)">Creation failed: ${escHtml(e.message)}</div><p style="font-size:12px;color:var(--text-muted);margin-top:6px">You can still create it manually using the steps below.</p>`;
-    // Show manual instructions
+    statusEl.innerHTML=`<div style="color:var(--error)">Creation failed: ${escHtml(e.message)}</div><p style="font-size:12px;color:var(--text-muted);margin-top:6px">You can create it manually instead:</p>`;
+    // Show the manual instructions on failure
     const manual=document.getElementById('manualCreateInstructions');
     if(manual)manual.classList.remove('hidden');
     return null;
