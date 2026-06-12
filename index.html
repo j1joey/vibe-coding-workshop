@@ -1305,10 +1305,12 @@ function displayIdeaResult(userDesc,data){
 
     if(data.claudePrompt){
       const fullPrompt=buildFullPrompt(data.claudePrompt,[]);
-      html+=`<p style="margin-top:14px;font-size:13px;color:var(--text-muted)">You can still start building. Claude will create the app, and you'll paste your agent's ID into the code after you create the agent in nebulaONE (find the ID in Settings &gt; Personal Agents &gt; click your agent).</p>`;
+      html+=`<div id="fallbackPromptSection" class="hidden" style="margin-top:14px">`;
+      html+=`<p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">You can still start building. Claude will create the app, and you'll paste your agent's ID into the code after you create the agent in nebulaONE (find the ID in Settings &gt; Personal Agents &gt; click your agent).</p>`;
       html+=`<div class="prompt-preview" id="ideaPromptPrev">${escHtml(fullPrompt)}</div>`;
       html+=`<div style="margin-top:8px"><button class="btn btn-pink" onclick="copyIdeaFreeform()">Copy & Go to Claude</button> <span class="copy-feedback" id="ideaCopyFb">Copied!</span></div>`;
       html+=`<div id="ideaPostCopy" class="hidden"></div>`;
+      html+=`</div>`;
     }
     html+=`</div>`; // close createFallback
   }
@@ -1433,9 +1435,11 @@ async function createAgentFromConfig(config,statusEl){
     return d3.gptSystemId;
   }catch(e){
     statusEl.innerHTML=`<div style="color:var(--error)">Creation failed: ${escHtml(e.message)}</div><p style="font-size:12px;color:var(--text-muted);margin-top:6px">You can create it manually instead:</p>`;
-    // Show the manual instructions on failure
+    // Show the manual instructions and fallback prompt on failure
     const manual=document.getElementById('manualCreateInstructions');
     if(manual)manual.classList.remove('hidden');
+    const fallbackPrompt=document.getElementById('fallbackPromptSection');
+    if(fallbackPrompt)fallbackPrompt.classList.remove('hidden');
     return null;
   }
 }
